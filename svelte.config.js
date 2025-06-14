@@ -15,7 +15,7 @@ const config = {
 			fallback: 'index.html'
 		}),
 		paths: {
-            base: '/blog'
+			base: process.env.NODE_ENV === 'production' ? '/pyrsuit-dev-blog' : '/blog'
         }
 	}
 };
