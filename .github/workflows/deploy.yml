@@ -24,8 +24,8 @@ jobs:
       - name: Build SvelteKit app
         run: npm run build
 
-      - name: Add .nojekyll
-        run: touch build/.nojekyll
+      - name: Add .nojekyll & CNAME
+        run: touch build/.nojekyll && echo "pyrsuit.dev" > build/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
