@@ -21,8 +21,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build SvelteKit app
-        run: npm run build
+      - name: Base64 encode token and build SvelteKit app
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
+        run: |
+          echo "Encoding GitHub token..."
+          export VITE_GITHUB_TOKEN_B64=$(echo -n "$VITE_GITHUB_TOKEN" | base64)
+          echo "Building app with encoded token..."
+          VITE_GITHUB_TOKEN_B64=$VITE_GITHUB_TOKEN_B64 npm run build
 
       - name: Add .nojekyll & CNAME
         run: touch build/.nojekyll && echo "pyrsuit.dev" > build/CNAME
