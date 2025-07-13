@@ -10,7 +10,7 @@
         <h2 class="text-2xl font-light tracking-tight">{post.title}</h2>
         <time class="text-sm text-gray-600 ml-4">{post.date}</time>
       </div>
-      <div class="text-base text-gray-800 leading-relaxed">
+      <div class="markdown-content text-base text-gray-800 leading-relaxed">
         {@html marked(post.text)}
       </div>
 
@@ -20,3 +20,13 @@
     </article>
   {/each}
 </section>
+
+<style>
+  :global(.markdown-content a) {
+    text-decoration: underline;
+    color: black; /* Change link color to black */
+  }
+  :global(.markdown-content a:hover) {
+    color: #333333; /* Slightly lighter black/gray on hover */
+  }
+</style>
