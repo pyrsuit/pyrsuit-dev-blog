@@ -1,5 +1,13 @@
 [
     {
+        "title": "When metrics eat your memory 🧠 🍽️",
+        "date": "2025-07-24",
+        "text": "Follow-up to my earlier post on Prometheus + Multiprocess Apps ... \n\n&nbsp;\n\nA few days in, I noticed the metrics directory was ballooning in memory 🎈 \n\n&nbsp;\n\nDigging in, I realized the Prometheus Python client (in multiprocess mode) writes separate files per metric per process. By default, those files are named things like `counter_12345.db`, where `12345` is the PID.\n\n&nbsp;\n\nSo when a `uWSGI` worker dies and gets replaced — totally normal behavior — the new process gets its own set of metric files. But the old files? They just stay there.\n\n&nbsp;\n\nSince the client doesn’t automatically clean up stale files, the directory just keeps growing.\n\n&nbsp;\n\n✅ Fix: I configured a cleanup step to remove metrics for dead processes.\n\n&nbsp;\n\n💡 Takeaway: In multiprocess mode, the metrics client tracks data per PID. Without cleanup, these files accumulate and quietly consume memory — especially in environments with frequent process restarts."
+
+
+    },
+
+    {
         "title": "Goodbye temp venv hacks 👋",
         "date": "2025-07-19",
         "text": "Today I learned how much I enjoy using `uv` scripts for quick, one-off tasks.\n\n&nbsp;\n\nYou can define dependencies right at the top of the script, and when you run it with `uv`, it spins up a temporary virtual environment automatically. Once the script finishes, the environment is destroyed — super clean 🧹\n\n&nbsp;\n\nThis is perfect for things like initial tasks when starting a container, or scripts that import data, run a migration, or do any kind of setup that isn't needed once the main app is running.\n\n&nbsp;\n\n💡 **Takeaway**: __[uv scripts](https://docs.astral.sh/uv/guides/scripts/)__ give you a disposable, isolated environment without any manual setup — ideal for clean, repeatable scripting without leaving a mess behind."
