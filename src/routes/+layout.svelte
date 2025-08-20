@@ -5,7 +5,6 @@
   
   const paths = [
     { name: 'About', href: '/' },
-    { name: 'Feed', href: '/feed' },
     { name: 'TIL', href: '/til' },
     { name: 'Lab', href: '/lab' }
   ];
@@ -46,6 +45,52 @@
 
 <style>
   a.selected {
-    font-weight: 600; /* semibold for active link */
+    font-weight: 600;
+  }
+  :global(a) {
+    text-decoration: underline;
+    color: black;
+  }
+  :global(a:hover) {
+    color: #333333;
+  }
+  :global(pre) {
+    background-color: #fef3c7;
+    padding: 0.2em 0.4em;
+    font-weight: 100;
+    font-size: 0.875rem;
+    margin-bottom: 1em; 
+  }
+  :global(nav a) {
+    text-decoration: none;
+  }
+  :global(code) {
+    background-color: #fef3c7;
+    padding: 0.1em 0.25em;
+    color: #333333;
+    font-weight: 400;
+    font-size: 0.875rem;
+    border-radius: 0.2em;
+    white-space: pre-wrap;
+  }
+  :global(pre code) {
+    padding: 0;
+    background-color: transparent;
+  }
+  :global(h1) {
+    font-size: 1.5rem;
+    margin-bottom: 0.5em;
+  }
+  :global(h2) {
+    font-size: 1.25rem;   
+    margin-bottom: 0.5em;
+  }
+  :global(p) {
+    margin-bottom: 1em; 
+  }
+  :global(ul) {
+    list-style-type: disc;
+    padding-left: 1.5em;
+    margin-bottom: 1em;
   }
 </style>
