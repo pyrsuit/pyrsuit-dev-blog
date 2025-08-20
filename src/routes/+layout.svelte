@@ -5,7 +5,6 @@
   
   const paths = [
     { name: 'About', href: '/' },
-    { name: 'Feed', href: '/feed' },
     { name: 'TIL', href: '/til' },
     { name: 'Lab', href: '/lab' }
   ];
