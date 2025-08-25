@@ -6,26 +6,38 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="./_app/immutable/assets/0.C8MMCInR.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.Cxxn3oGW.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/B2O-SCyF.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.DqFr9GaG.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/Bx_UM1Q1.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/C5p6yFnd.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/BEstxxQJ.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DIeogL5L.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CP3R_UMT.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/BCsLTOEx.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.YySJQi__.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.CALh-ndF.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DWi71-B2.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/3bNq5A5K.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/0.CpvqQ4HT.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.DBWw7Lht.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/69_IOA4Y.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/BubvNkcn.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Cup5C6IR.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/D1SBIn0e.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/5.CX9Z4let.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
+		<link rel="modulepreload" href="./_app/immutable/nodes/5.DRHt1yat.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="./" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-fks4u5" style="font-family: 'Montserrat', sans-serif;">About</a><a href="./til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-fks4u5" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="./lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-fks4u5" style="font-family: 'Montserrat', sans-serif;">Lab</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8"><!--[--><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">The one when TRUNCATE locked me out 🚪🔒</h1> <time class="text-sm text-gray-600 ml-4">2025-08-19</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>While running <code>pytest</code> with <code>MySQL</code>, I kept hitting tests stuck on: <code>Waiting for table metadata lock</code> 😫 </p>
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="./" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-fks4u5" style="font-family: 'Montserrat', sans-serif;">About</a><a href="./til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-fks4u5" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="./lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-fks4u5" style="font-family: 'Montserrat', sans-serif;">Lab</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8"><!--[--><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">Walrus operator: assign on the fly 🛫</h1> <time class="text-sm text-gray-600 ml-4">2025-08-25</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>I recently discovered that Python has a neat operator for assigning a value and using it immediately: the <code>:=</code> operator, also called the walrus operator.</p>
+<p>For example, instead of:</p>
+<pre><code class="language-python">value = data.get(&quot;key&quot;)
+if value:
+    print(len(value))
+</code></pre>
+<p>You can do:</p>
+<pre><code class="language-python">if (value := data.get(&quot;key&quot;)):
+    print(len(value))
+</code></pre>
+<p>Boom 💥 value is assigned and ready to roll.</p>
+<p>💡 <strong>Takeaway</strong>: <code>:=</code> = assign inline, use instantly, keep it neat.</p>
+<!----></div> <!--[--><hr class="border-t border-gray-300 mt-6"/><!--]--></article><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">The one when TRUNCATE locked me out 🚪🔒</h1> <time class="text-sm text-gray-600 ml-4">2025-08-19</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>While running <code>pytest</code> with <code>MySQL</code>, I kept hitting tests stuck on: <code>Waiting for table metadata lock</code> 😫 </p>
 <p>Digging in, I found the culprit: my fixtures were using <code>TRUNCATE TABLE</code> to clean test data between runs. </p>
 <p>Here&#39;s the catch: In MySQL, <code>TRUNCATE</code> is <strong><a href="https://en.wikipedia.org/wiki/Data_definition_language">DDL</a></strong>, not <strong><a href="https://en.wikipedia.org/wiki/Data_manipulation_language">DML</a></strong>. It drops/recreates the table under the hood, resets <code>AUTO_INCREMENT</code>, and requires an <strong>exclusive metadata lock</strong>. If any transaction has touched the table — even just a <code>SELECT</code> — <code>TRUNCATE</code> will block until that lock is released. In <code>pytest</code>, with long-lived connections, this happened constantly. </p>
 <p>✅ <strong>Fix:</strong> switched to <code>DELETE FROM</code> table for cleanup. <code>DELETE</code> is <code>DML</code>, transactional, and only takes row locks + short metadata locks. It doesn&#39;t reset <code>AUTO_INCREMENT</code>, but it doesn&#39;t block other transactions either. </p>
@@ -42,7 +54,7 @@
 <p>You can define dependencies right at the top of the script, and when you run it with <code>uv</code>, it spins up a temporary virtual environment automatically. Once the script finishes, the environment is destroyed — super clean 🧹</p>
 <p>This is perfect for things like initial tasks when starting a container, or scripts that import data, run a migration, or do any kind of setup that isn&#39;t needed once the main app is running.</p>
 <p>💡 <strong>Takeaway</strong>: <strong><a href="https://docs.astral.sh/uv/guides/scripts/">uv scripts</a></strong> give you a disposable, isolated environment without any manual setup — ideal for clean, repeatable scripting without leaving a mess behind.</p>
-<!----></div> <!--[--><hr class="border-t border-gray-300 mt-6"/><!--]--></article><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">Prometheus + multiprocess apps: A Lesson from the trenches</h1> <time class="text-sm text-gray-600 ml-4">2025-07-13</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>I recently deployed an API using <code>uWSGI</code> with multiple workers. I exposed a <code>/metrics</code> endpoint for <code>Prometheus</code> scraping — all looked good.</p>
+<!----></div> <!--[--><hr class="border-t border-gray-300 mt-6"/><!--]--></article><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">Prometheus + multiprocess apps: A lesson from the trenches</h1> <time class="text-sm text-gray-600 ml-4">2025-07-13</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>I recently deployed an API using <code>uWSGI</code> with multiple workers. I exposed a <code>/metrics</code> endpoint for <code>Prometheus</code> scraping — all looked good.</p>
 <p>Until I realized… the metrics were off 🫠</p>
 <p>Turns out, when you&#39;re using multiple <code>uWSGI</code> workers, <code>Prometheus</code>&#39; Python client needs <strong>multiprocess mode</strong> enabled to aggregate metrics across all worker processes. Without it, each process exposes its own separate metrics — so counters, for example, appear to jump up and down instead of increasing cumulatively across all workers. </p>
 <p>✅ <strong>Fix:</strong> Configured <strong><a href="https://prometheus.github.io/client_python/multiprocess/">multiprocess mode</a></strong>, so all workers write metrics to a shared directory.</p>
@@ -51,7 +63,7 @@
 			
 			<script>
 				{
-					__sveltekit_3kdapp = {
+					__sveltekit_li7ek2 = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -59,8 +71,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("./_app/immutable/entry/start.Cxxn3oGW.js"),
-						import("./_app/immutable/entry/app.YySJQi__.js")
+						import("./_app/immutable/entry/start.DqFr9GaG.js"),
+						import("./_app/immutable/entry/app.CALh-ndF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
