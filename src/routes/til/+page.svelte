@@ -1,11 +1,12 @@
 <script>
+  import { codeCopy } from '$lib/actions/codeCopy';
   import posts from '$lib/til.json';
   import { marked } from 'marked';
 </script>
 
 <section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8">
   {#each posts as post, i}
-    <article>
+    <article use:codeCopy>
       <div class="flex items-baseline justify-between mb-2">
         <h1 class="text-2xl font-light tracking-tight">{post.title}</h1>
         <time class="text-sm text-gray-600 ml-4">{post.date}</time>

@@ -64,25 +64,59 @@
   :global(nav a) {
     text-decoration: none;
   }
-  :global(code) {
+  :global(.code-block) {
+    position: relative;
+    margin: 0.5em 0;
     background-color: #fef3c7;
-    padding: 0.1em 0.25em;
-    color: #333333;
-    font-weight: 400;
-    font-size: 0.875rem;
     border-radius: 0.2em;
-    white-space: pre-wrap;
+    overflow: auto;
+    padding: 1.25em 1em 0.01em 1em;
+    font-family: monospace;
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
-  :global(pre code) {
-    padding: 0;
-    background-color: transparent;
+  :global(.code-block > .language-label),
+  :global(.code-block > .copy-btn) {
+    top: 0.25em;
+    transform: translateY(1px);
+  }
+  :global(.code-block) {
+    position: relative;
+  }
+  :global(.code-block pre) {
+    padding-top: 1rem;
+  }
+  :global(.code-block .language-label) {
+    position: absolute;
+    top: 0.25em;
+    left: 0.5em;
+    color: #81807eff;
+    font-size: 0.75rem;
+    background: transparent;
+  }
+  :global(.code-block .copy-btn) {
+    position: absolute;
+    top: 0.25em;
+    right: 0.5em;
+    font-size: 0.75rem;
+    background-color: #fde68a;
+    color: black;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  :global(.mermaid code) {
+    all: unset;
   }
   :global(h1) {
     font-size: 1.5rem;
+    font-weight: 600;
     margin-bottom: 0.5em;
   }
   :global(h2) {
     font-size: 1.25rem;   
+    font-weight: 600; 
+    padding-top: 0.75rem; 
     margin-bottom: 0.5em;
   }
   :global(p) {
@@ -92,5 +126,8 @@
     list-style-type: disc;
     padding-left: 1.5em;
     margin-bottom: 1em;
+  }
+  :global(.copy-btn:hover) {
+    background-color: #fcd34d;
   }
 </style>
