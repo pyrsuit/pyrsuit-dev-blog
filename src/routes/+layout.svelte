@@ -5,6 +5,7 @@
   
   const paths = [
     { name: 'About', href: '/' },
+    { name: 'Feed', href: '/feed' },
     { name: 'TIL', href: '/til' },
     { name: 'Lab', href: '/lab' }
   ];
@@ -105,6 +106,9 @@
     border-radius: 0.25rem;
     cursor: pointer;
   }
+  :global(code) {
+    background-color: #fef3c7;
+  }
   :global(.mermaid code) {
     all: unset;
   }
@@ -114,7 +118,7 @@
     margin-bottom: 0.5em;
   }
   :global(h2) {
-    font-size: 1.25rem;   
+    font-size: 1.25rem;
     font-weight: 600; 
     padding-top: 0.75rem; 
     margin-bottom: 0.5em;
@@ -129,5 +133,21 @@
   }
   :global(.copy-btn:hover) {
     background-color: #fcd34d;
+  }
+  :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    table-layout: fixed;
+  }
+  :global(thead th) {
+    border-bottom: 1px solid #333;
+    text-align: left;
+    padding: 0.5rem;
+  }
+  :global(tbody td) {
+    border-bottom: 1px solid #ccc;
+    padding: 0.5rem;
   }
 </style>
