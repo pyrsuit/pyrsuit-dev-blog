@@ -1,1 +1,0 @@
-import"../chunks/Bzak7iHL.js";import"../chunks/69_IOA4Y.js";import{f as a,a as p}from"../chunks/CNLPSFaA.js";var r=a('<h1>The Py<span style="font-weight: 100;">(thon Pu)</span>rsuit</h1>');function m(o){var t=r();p(o,t)}export{m as component};
