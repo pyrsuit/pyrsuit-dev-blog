@@ -1,7 +1,11 @@
 <script>
   import { codeCopy } from '$lib/actions/codeCopy';
   import posts from '$lib/til.json';
+  import { renderer } from '$lib/markdown';
   import { marked } from 'marked';
+  
+  marked.use({ renderer });
+
 </script>
 
 <section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8">
