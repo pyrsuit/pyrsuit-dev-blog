@@ -115,10 +115,11 @@ void setup_wifi() {
 }
 ```
 
-With the Wi-Fi connection available, the board can publish data to the `MQTT`:
+With the Wi-Fi connection available, the board can publish data to `MQTT`:
 
 ```cpp
-#include <PubSubClient.h>
+#include &lt;PubSubClient.h&gt;
+
 
 ...
 
@@ -211,7 +212,7 @@ Once the data lands in `MQTT`, the measurements can be displayed in `Home Assist
 
 ## Up next
 
-In the next part, I’ll dive into my `Rust`-based logger and share how it works. S
+In the next part, I’ll dive into my `Rust`-based logger and share how it works.
 
 Stay tuned, Pyrsuers! 🐍
 
