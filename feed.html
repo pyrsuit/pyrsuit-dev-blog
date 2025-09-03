@@ -6,28 +6,176 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="./_app/immutable/assets/0.CczKcHiT.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.vwlNuEQ8.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/JBZ8HPR6.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.C2f8M1sw.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/HmGoMqso.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Dxtxyj28.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DK8D298C.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/JY5l5D6Y.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/eVigdbh7.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.0T9ppkda.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.BlLZjZCz.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Dp1pzeXC.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DHz2Y3yU.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CSz6k_A3.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/0.hZmd5kRq.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.DoJJaxG3.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CcL8L1UM.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DLrSe-_4.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bx_LN-Xl.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CcjtmNi5.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/3.BHA2-hd9.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/KjsdVZXa.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/3.HhoYlhRm.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/GlCF_tPK.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Dq1ptKLK.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="./" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">About</a><a href="./feed" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">Feed</a><a href="./til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="./lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">Lab</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8"><article><!----><div class="flex items-baseline justify-between mb-2">
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="./" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">About</a><a href="./feed" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">Feed</a><a href="./til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="./lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">Lab</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8"><!--[--><article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
+  <h1 class="text-2xl font-light tracking-tight">A cookbook for a weather station — Part II</h1>
+  <time class="text-sm text-gray-600 ml-4">September 3, 2025</time>
+</div>
+
+<h2>Collecting and archiving measurement data</h2>
+<p>In part I of my weather station cookbook, I wrote about setting up and publishing sensor data to <code>MQTT</code> using an <code>Arduino</code>. In this post, I’ll focus on storing that data so it can be analyzed over time.</p>
+<p><code>MQTT</code> only keeps the latest value, so to create a proper history, I decided to save everything in a database  — in <code>SQLite</code> because it’s file-based — you can open it directly, inspect the data, or even move it like any other file.</p>
+<p>A tidbit diverging from the name of this blog, I implemented the logger in <code>Rust</code> instead of <code>Python</code>.</p>
+<p>The script itself is pretty simple:</p>
+<ul>
+<li>it sets up the <code>SQLite</code> database and ensures the measurements table exists:</li>
+</ul>
+
+      <div class="code-block">
+        <small class="language-label">rust</small>
+        <pre><code class="language-rust">use rusqlite::Connection;
+
+...
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> { 
+    let conn = Connection::open("weather_station.db").expect("Failed to open DB");
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS measurements (
+                timestamp TEXT NOT NULL,
+                value REAL NOT NULL,
+                metric TEXT NOT NULL,
+                unit TEXT NOT NULL
+            )",
+            [],
+        )?;   
+
+    ...
+
+}</code></pre>
+      </div>
+    <ul>
+<li>it configures and connects the <code>MQTT</code> client to the broker and subscribes to the <strong>temperature</strong> and <strong>humidity</strong> topics:</li>
+</ul>
+
+      <div class="code-block">
+        <small class="language-label">rust</small>
+        <pre><code class="language-rust">use rumqttc::{MqttOptions, Client, QoS};
+use std::time::Duration;
+
+...
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+    let mut mqttoptions = MqttOptions::new("mqtt_logger", "localhost", 1883);
+
+    mqttoptions.set_keep_alive(Duration::from_secs(15 * 60));
+
+    mqttoptions.set_clean_session(false);
+
+    let (client, mut eventloop) = Client::new(mqttoptions, 10);
+    client.subscribe("weather/indoor-sensor/temperature", QoS::AtMostOnce)?;
+    client.subscribe("weather/indoor-sensor/humidity", QoS::AtMostOnce)?;
+
+    ...
+
+}</code></pre>
+      </div>
+    <ul>
+<li>it continuously listens for incoming messages in a dedicated thread, which parses each message from <code>json</code> and inserts it into the database - errors in parsing or database operations are logged, and the <code>MQTT</code> connection automatically retries on failure:</li>
+</ul>
+
+      <div class="code-block">
+        <small class="language-label">rust</small>
+        <pre><code class="language-rust">use rusqlite::params;
+use serde::Deserialize;
+use serde_json;
+use std::thread;
+
+#[derive(Deserialize)]
+struct SensorPayload {
+    timestamp: i64,
+    metric: String,
+    value: f64,
+    unit: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    ...
+
+    let handle = thread::spawn(move || {
+        for message in eventloop.iter() {
+            match message {
+                Ok(rumqttc::Event::Incoming(rumqttc::Packet::Publish(p))) => {
+                    if let Ok(text) = String::from_utf8(p.payload.to_vec()) {
+                        match serde_json::from_str::<SensorPayload>(&text) {
+                        Ok(data) => {
+                            if let Err(e) = conn.execute(
+                                    "INSERT INTO measurements
+                                        (timestamp, value, metric, unit)
+                                    VALUES (?1, ?2, ?3, ?4)",
+                                    params![
+                                        data.timestamp,
+                                        data.value,
+                                        data.metric,
+                                        data.unit
+                                    ],
+                                )  {
+                                    eprintln!("DB insert error: {}", e);
+                                } else {
+                                    println!("Inserted @ {}", data.timestamp);
+                                }
+                            }
+                            Err(e) => eprintln!("JSON parse error: {}", e),
+                        }
+                    }
+                }
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("MQTT error: {} — reconnecting in 5s", e);
+                    std::thread::sleep(std::time::Duration::from_secs(5));
+                }
+            }
+        }
+    });
+
+    ...
+
+}</code></pre>
+      </div>
+    <ul>
+<li>the main thread is blocked until the <code>MQTT</code> thread finishes - in practice it runs forever:</li>
+</ul>
+
+      <div class="code-block">
+        <small class="language-label">rust</small>
+        <pre><code class="language-rust">
+...
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    ...
+
+    let handle = ... ;
+
+    handle.join().unwrap();
+
+    Ok(())
+}</code></pre>
+      </div>
+    <!----></div> <!--[--><hr class="border-t border-gray-300 mt-6"/><!--]--></article><article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
   <h1 class="text-2xl font-light tracking-tight">A cookbook for a weather station — Part I</h1>
   <time class="text-sm text-gray-600 ml-4">September 1, 2025</time>
 </div>
@@ -263,11 +411,11 @@ void loop() {
 <p>In the next part, I’ll dive into my <code>Rust</code>-based logger and share how it works.</p>
 <p>Stay tuned, Pyrsuers! 🐍</p>
 <p><em>If you would like to check out the entire project, it is available in my <a href="https://github.com/pyrsuit/weather-station/tree/main">weather-station</a> repo.</em></p>
-<!----></article></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
+<!----></div> <!--[!--><!--]--></article><!--]--></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_45seky = {
+					__sveltekit_1dj87p5 = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -275,8 +423,8 @@ void loop() {
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("./_app/immutable/entry/start.vwlNuEQ8.js"),
-						import("./_app/immutable/entry/app.0T9ppkda.js")
+						import("./_app/immutable/entry/start.C2f8M1sw.js"),
+						import("./_app/immutable/entry/app.BlLZjZCz.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 3],
