@@ -1,6 +1,6 @@
 <div class="flex items-baseline justify-between mb-2">
   <h1 class="text-2xl font-light tracking-tight">A cookbook for a weather station — Part II</h1>
-  <time class="text-sm text-gray-600 ml-4">September 3, 2025</time>
+  <time class="text-sm text-gray-600 ml-4">September 6, 2025</time>
 </div>
 
 ## Collecting and archiving measurement data
@@ -142,3 +142,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+
+## Looking ahead
+
+With the logger in place, I now have a reliable stream of weather data available for further use.
+
+In the next part of this series, I’ll finally move on to some **exploratory** data analysis — this time with `Python` 💙
+
+I also want to try out [Marimo Notebooks](https://marimo.io), which I’ve heard promising things about, and see how they compare to similar tools like [Jupyter](https://jupyter.org).
+
+My plan is to dig into the collected data, visualize some first trends, and start answering interesting questions about what the weather station has been recording:
+- What patterns will show up in the data?
+- How do **temperature** and **humidity** change throughout the day?
+- Are there any surprising correlations hidden in the measurements?
+
+I’m excited to find out more — see you in part III!
+
+*Once again, if you find this project interesting, you can check it out in my [weather-station](https://github.com/pyrsuit/weather-station/tree/main) repo.*
