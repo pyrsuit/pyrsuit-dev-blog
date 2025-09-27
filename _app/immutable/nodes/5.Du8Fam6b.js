@@ -1,8 +1,8 @@
-import"../chunks/Bzak7iHL.js";import"../chunks/CcL8L1UM.js";import{ai as E,f as p,a as d,aj as P,ak as e,al as n,am as u,g as m,an as D}from"../chunks/DK8D298C.js";import{s as f}from"../chunks/JY5l5D6Y.js";import{i as A}from"../chunks/DHz2Y3yU.js";import{e as N,i as L}from"../chunks/DLrSe-_4.js";import{d as g,r as C,h as S,a as U,c as W}from"../chunks/Dq1ptKLK.js";import{i as R}from"../chunks/CcjtmNi5.js";const _=[{title:"Private 🚫 vs Protected 🛡️ in Python",date:"2025-09-27",text:`In Python, a single underscore means **private by convention**, while a double underscore triggers **name mangling** to protect attributes from being accidentally overridden in subclasses.
+import"../chunks/Bzak7iHL.js";import"../chunks/CcL8L1UM.js";import{ai as E,f as p,a as d,aj as P,ak as e,al as n,am as u,g as m,an as D}from"../chunks/DK8D298C.js";import{s as f}from"../chunks/JY5l5D6Y.js";import{i as A}from"../chunks/DHz2Y3yU.js";import{e as N,i as L}from"../chunks/DLrSe-_4.js";import{d as g,r as C,h as S,a as U,c as W}from"../chunks/Dq1ptKLK.js";import{i as R}from"../chunks/CcjtmNi5.js";const _=[{title:"Private 🚫 vs Protected 🛡️",date:"2025-09-27",text:`In Python, a single underscore means **private by convention**, while a double underscore triggers **name mangling** to protect attributes from being accidentally overridden in subclasses.
 
 But what happens if a subclass defines its own double underscore attribute? How does a single-underscore variable differ from a double underscore variable in practice?
 
-For example, the base \`Metric\` class has a core \`__storage\` and a \`_mean\`:
+For example, the base \`Metric\` class has \`__storage\` and a \`_mean\`:
 
 \`\`\`python
 class Metric:
@@ -26,7 +26,7 @@ print("Metric mean:", m.mean())  # 6.5
 print("Metric __dict__:", m.__dict__)  # {'_Metric__storage': [5, 8], '_mean': 6.5}
 \`\`\`
 
-A subclass can safely define its own double underscore attribute without overwriting the parent:
+A subclass can define its own double underscore attribute without overwriting the parent:
 
 \`\`\`python
 class MaxMetric(Metric):
