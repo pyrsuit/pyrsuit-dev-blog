@@ -6,27 +6,80 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="./_app/immutable/assets/0.zjr9RkKc.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.CadGcpOv.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/DBaexPTZ.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.CITxGDiH.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/D3gqM4xz.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Dxtxyj28.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DK8D298C.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/JY5l5D6Y.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/eVigdbh7.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.mxDdi_cS.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.g75MXF7F.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Dp1pzeXC.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DHz2Y3yU.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CSz6k_A3.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/0.LcxscAMP.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.DNJ0z3Qs.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CcL8L1UM.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/DLrSe-_4.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bx_LN-Xl.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CcjtmNi5.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/5.CZnpY4jM.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/5.BpQhvn-d.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Dq1ptKLK.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="./" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">About</a><a href="./feed" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">Feed</a><a href="./til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">TIL</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8"><!--[--><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">Walrus operator: assign on the fly 🛫</h1> <time class="text-sm text-gray-600 ml-4">2025-08-25</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>I recently discovered that Python has a neat operator for assigning a value and using it immediately: the <code>:=</code> operator, also called the walrus operator.</p>
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="./" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">About</a><a href="./feed" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">Feed</a><a href="./til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1jhqufd" style="font-family: 'Montserrat', sans-serif;">TIL</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8"><!--[--><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">Private 🚫 vs Protected 🛡️ in Python</h1> <time class="text-sm text-gray-600 ml-4">2025-09-27</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>In Python, a single underscore means <strong>private by convention</strong>, while a double underscore triggers <strong>name mangling</strong> to protect attributes from being accidentally overridden in subclasses.</p>
+<p>But what happens if a subclass defines its own double underscore attribute? How does a single-underscore variable differ from a double underscore variable in practice?</p>
+<p>For example, the base <code>Metric</code> class has a core <code>__storage</code> and a <code>_mean</code>:</p>
+
+      <div class="code-block">
+        <small class="language-label">python</small>
+        <pre><code class="language-python">class Metric:
+    def __init__(self):
+        self.__storage = []  # double underscore → protected
+        self._mean = None  # single underscore → private
+
+    def add(self, num):
+        self.__storage.append(num)
+        self._mean = None
+
+    def mean(self):
+        if self._mean is None:
+            self._mean = sum(self.__storage) / len(self.__storage)
+        return self._mean
+
+m = Metric()
+m.add(5)
+m.add(8)
+print("Metric mean:", m.mean())  # 6.5
+print("Metric __dict__:", m.__dict__)  # {'_Metric__storage': [5, 8], '_mean': 6.5}</code></pre>
+      </div>
+    <p>A subclass can safely define its own double underscore attribute without overwriting the parent:</p>
+
+      <div class="code-block">
+        <small class="language-label">python</small>
+        <pre><code class="language-python">class MaxMetric(Metric):
+    def __init__(self):
+        super().__init__()
+        self.__storage = None  # subclass storage, mangled separately
+
+    def add(self, num):
+        super().add(num)
+        if self.__storage is None or num > self.__storage:
+            self.__storage = num
+
+    def max(self):
+        return self.__storage
+
+mm = MaxMetric()
+mm.add(3)
+mm.add(10)
+mm.add(7)
+print("MaxMetric mean:", mm.mean())  # 6.666666666666667
+print("MaxMetric max:", mm.max())  # 10
+print("MaxMetric __dict__:", mm.__dict__)
+# {'_Metric__storage': [3, 10, 7], '_mean': 6.666666666666667, '_MaxMetric__storage': 10}</code></pre>
+      </div>
+    <p>💡 <strong>Takeaway</strong>: Use <strong>single</strong> underscore for helpers or temporary state, <strong>double</strong> underscore for critical storage that shouldn&#39;t be accidentally overridden.</p>
+<!----></div> <!--[--><hr class="border-t border-gray-300 mt-6"/><!--]--></article><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">Walrus operator: assign on the fly 🛫</h1> <time class="text-sm text-gray-600 ml-4">2025-08-25</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>I recently discovered that Python has a neat operator for assigning a value and using it immediately: the <code>:=</code> operator, also called the walrus operator.</p>
 <p>For example, instead of:</p>
 
       <div class="code-block">
@@ -70,7 +123,7 @@ if value:
 			
 			<script>
 				{
-					__sveltekit_wohcwm = {
+					__sveltekit_fd8ncs = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -78,8 +131,8 @@ if value:
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("./_app/immutable/entry/start.CadGcpOv.js"),
-						import("./_app/immutable/entry/app.mxDdi_cS.js")
+						import("./_app/immutable/entry/start.CITxGDiH.js"),
+						import("./_app/immutable/entry/app.g75MXF7F.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
