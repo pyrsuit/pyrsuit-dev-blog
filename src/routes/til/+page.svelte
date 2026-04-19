@@ -16,6 +16,18 @@
 </script>
 
 <section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16 space-y-8">
+  {#if totalPages > 1}
+    <div class="flex items-center justify-end gap-6 pb-2">
+      {#if currentPage > 1}
+        <a href="?page={currentPage - 1}" class="font-extralight text-sm">← prev</a>
+      {/if}
+      <span class="font-extralight text-sm text-gray-500">{currentPage} / {totalPages}</span>
+      {#if currentPage < totalPages}
+        <a href="?page={currentPage + 1}" class="font-extralight text-sm">next →</a>
+      {/if}
+    </div>
+  {/if}
+
   {#each pagePosts as post, i}
     <article use:codeCopy>
       <div class="flex items-baseline justify-between mb-2">
@@ -33,7 +45,7 @@
   {/each}
 
   {#if totalPages > 1}
-    <div class="flex items-center gap-6 pt-4">
+    <div class="flex items-center justify-end gap-6 pt-4">
       {#if currentPage > 1}
         <a href="?page={currentPage - 1}" class="font-extralight text-sm">← prev</a>
       {/if}
