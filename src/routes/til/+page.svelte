@@ -4,13 +4,16 @@
   import { renderer } from '$lib/markdown';
   import { marked } from 'marked';
   import { page } from '$app/stores';
+  import { browser } from '$app/environment';
 
   marked.use({ renderer });
 
   const PER_PAGE = 5;
   const totalPages = Math.ceil(posts.length / PER_PAGE);
 
-  $: currentPage = Math.max(1, Math.min(parseInt($page.url.searchParams.get('page') || '1'), totalPages));
+  $: currentPage = browser
+    ? Math.max(1, Math.min(parseInt($page.url.searchParams.get('page') || '1'), totalPages))
+    : 1;
   $: start = (currentPage - 1) * PER_PAGE;
   $: pagePosts = posts.slice(start, start + PER_PAGE);
 </script>
