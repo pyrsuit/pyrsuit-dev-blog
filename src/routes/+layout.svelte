@@ -5,10 +5,9 @@
   
   const paths = [
     { name: 'About', href: '/' },
-    { name: 'Feed', href: '/feed' },
     { name: 'TIL', href: '/til' },
+    { name: 'Lab', href: '/lab' },
     { name: 'Contact', href: '/contact' },
-    // { name: 'Lab', href: '/lab' }
   ];
 
   $: active = $page.url.pathname;
