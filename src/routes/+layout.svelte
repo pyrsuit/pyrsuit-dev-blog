@@ -65,6 +65,10 @@
   :global(nav a) {
     text-decoration: none;
   }
+  :global(.hljs) {
+    background: #fef3c7;
+    padding: 0;
+  }
   :global(.code-block) {
     position: relative;
     margin: 0.5em 0;
