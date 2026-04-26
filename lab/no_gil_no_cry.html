@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="../_app/immutable/assets/0.BWj8LSPE.css" rel="stylesheet">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.DaLiWHzZ.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Drb5tSLS.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/I71bVGGT.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CDsez_Gm.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Ciy5EP2b.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DcSbw-Oq.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Cp4L6OvZ.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.DxLaIUh4.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Dh7Hj6G1.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CWjPdQEG.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DoCYdl2-.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.Buak4YTF.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DORQWOit.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D0mMVKcf.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CK7KUTJ6.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DHXagj1S.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DLHmOI_U.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.4mgmPQiO.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DRS9EEm8.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DLjVo20G.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/BT5y1Oxm.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
+  <h1 class="text-2xl font-light tracking-tight">No GIL, no cry?</h1>
+  <time class="text-sm text-gray-600 ml-4">April 26, 2026</time>
+</div>
+
+<blockquote>
+<p><em>Testing <strong>Python 3.13</strong>&#39;s free-threaded build with <code>asyncio</code>, real OS threads, and a semaphore.</em></p>
+</blockquote>
+<h2>Some background first</h2>
+<p><strong>Python 3.13</strong> shipped one of the most significant changes in the language&#39;s history: the <strong>GIL</strong> - the <strong>Global Interpreter Lock</strong> — is <em>optional</em>. For years, the GIL has been the reason <strong>Python</strong> threads can&#39;t truly run in parallel. Only one thread holds the lock at a time, so CPU-bound work serializes even when you spawn a dozen threads. Free-threaded <strong>CPython</strong> (the <code>+freethreaded</code> build) removes that constraint entirely.</p>
+<p>I wanted to see it with my own eyes. Not just read about it — actually run code, watch the threads, and check the difference is real.</p>
+<h2>What is the GIL, briefly?</h2>
+<p>The GIL is a <strong>mutex</strong> inside <strong>CPython</strong> that protects the interpreter&#39;s internal state. It means only one thread can execute <strong>Python</strong> bytecode at any moment. For I/O-bound work this barely matters - threads spend most of their time waiting anyway. But for CPU-bound work, it&#39;s a hard ceiling: no matter how many cores your machine has, standard CPython threads <strong>don&#39;t truly parallelize</strong>.</p>
+<p>The free-threaded build <strong>removes</strong> the GIL, allowing threads to run <strong>Python</strong> bytecode simultaneously across cores.</p>
+<h2>The setup</h2>
+<p><strong>Python:</strong> CPython 3.13 (with GIL) vs CPython 3.13+freethreaded (no GIL)<br><strong>Tool:</strong> <a href="https://docs.astral.sh/uv/"><code>uv</code></a> - handles installing both <strong>Python</strong> builds and running the script, <strong>no</strong> virtualenv juggling needed</p>
+<p>I originally wanted to use <strong>Python 3.14</strong>, which is the latest release. But when I tried to install the free-threaded build, <code>uv</code> hit a wall on my machine:</p>
+
+      <div class="code-block">
+        <small class="language-label">bash</small>
+        <pre><code class="hljs language-bash">error: No download found <span class="hljs-keyword">for</span> request</code></pre>
+      </div>
+    <p>So I dropped back to <strong>3.13</strong>.</p>
+<p>Install both builds with:</p>
+
+      <div class="code-block">
+        <small class="language-label">bash</small>
+        <pre><code class="hljs language-bash">uv python install cpython-3.13
+uv python install cpython-3.13+freethreaded</code></pre>
+      </div>
+    <h2>The components</h2>
+<p>The script combines three things deliberately:</p>
+<p><strong><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.gather"><code>asyncio.gather</code></a></strong> — spawns all tasks concurrently from a single event loop.</p>
+<p><strong><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.to_thread"><code>asyncio.to_thread</code></a></strong> — dispatch a synchronous function onto a real OS thread from an async coroutine. Each task gets its own thread, which is where GIL contention actually happens.</p>
+<p><strong><a href="https://docs.python.org/3/library/asyncio-sync.html#asyncio.Semaphore"><code>asyncio.Semaphore</code></a></strong> — limits how many threads are doing work at the same time. Acquired in the async layer <strong>before</strong> the thread is spawned, so the event loop is the gatekeeper. If set to 10, at most 10 threads crunch numbers simultaneously.</p>
+<p>The work itself is a pure CPU-bound busy loop - no I/O, no sleeping - because that&#39;s exactly the condition where the GIL hurts most.</p>
+<h2>The script</h2>
+
+      <div class="code-block">
+        <small class="language-label">python</small>
+        <pre><code class="hljs language-python"><span class="hljs-comment"># /// script</span>
+<span class="hljs-comment"># requires-python = &quot;&gt;=3.13&quot;</span>
+<span class="hljs-comment"># dependencies = []</span>
+<span class="hljs-comment"># ///</span>
+
+<span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime, timezone
+
+<span class="hljs-comment"># config</span>
+TOTAL_TASKS = <span class="hljs-number">1000</span> <span class="hljs-comment"># asyncio tasks (and threads) to spawn</span>
+CONCURRENCY = <span class="hljs-number">10</span> <span class="hljs-comment"># max threads doing CPU work simultaneously</span>
+WORK_DURATION = <span class="hljs-number">0.15</span> <span class="hljs-comment"># seconds of CPU-bound work per thread</span>
+
+semaphore = asyncio.Semaphore(CONCURRENCY)
+_active = <span class="hljs-number">0</span>
+_lock = threading.Lock()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">ts</span>() -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-keyword">return</span> datetime.now(timezone.utc).strftime(<span class="hljs-string">&quot;%H:%M:%S.%f&quot;</span>)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cpu_work</span>(<span class="hljs-params">duration: <span class="hljs-built_in">float</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Pure CPU-bound busy loop - GIL contention shows up here.&quot;&quot;&quot;</span>
+    end = time.perf_counter() + duration
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> time.perf_counter() &lt; end:
+        count += <span class="hljs-number">1</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">do_work</span>(<span class="hljs-params">task_id: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">dict</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Runs inside a real OS thread — semaphore already acquired by the coroutine.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">global</span> _active
+    <span class="hljs-keyword">with</span> _lock:
+        _active += <span class="hljs-number">1</span>
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;... active=<span class="hljs-subst">{_active}</span>&quot;</span>)  <span class="hljs-comment"># should never exceed CONCURRENCY</span>
+        <span class="hljs-keyword">assert</span> _active &lt;= CONCURRENCY, <span class="hljs-string">f&quot;Semaphore broken! <span class="hljs-subst">{_active}</span> active&quot;</span>
+    
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{ts()}</span>]  task <span class="hljs-subst">{task_id}</span> │ thread=<span class="hljs-subst">{threading.get_ident()}</span> │ working&quot;</span>)
+
+    cpu_work(WORK_DURATION)
+ 
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{ts()}</span>]  task <span class="hljs-subst">{task_id}</span> │ thread=<span class="hljs-subst">{threading.get_ident()}</span> │ done&quot;</span>)
+
+    <span class="hljs-keyword">with</span> _lock:
+        _active -= <span class="hljs-number">1</span>
+
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">worker</span>(<span class="hljs-params">task_id: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">dict</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Waits for the asyncio semaphore, then dispatches work to a real OS thread.&quot;&quot;&quot;</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{ts()}</span>]  task <span class="hljs-subst">{task_id}</span> │ waiting for semaphore&quot;</span>)
+ 
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> semaphore:
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> asyncio.to_thread(do_work, task_id)
+
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>() -&gt; <span class="hljs-literal">None</span>:
+    start = time.perf_counter()
+    results = <span class="hljs-keyword">await</span> asyncio.gather(*(worker(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, TOTAL_TASKS + <span class="hljs-number">1</span>)))
+    elapsed = time.perf_counter() - start
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Time elapsed: <span class="hljs-subst">{elapsed:<span class="hljs-number">.1</span>f}</span>s&quot;</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    asyncio.run(main())</code></pre>
+      </div>
+    <p>A few things worth noting:</p>
+<ul>
+<li>The <code>semaphore</code> is global and created at module level — <code>asyncio.Semaphore</code> must be created in the same event loop it&#39;s used in, which <code>asyncio.run()</code> handles for us here.</li>
+<li>The <code>_active</code> counter and <code>assert</code> are there to <strong>verify</strong> the semaphore is actually working — if more than <code>CONCURRENCY</code> threads ever enter <code>do_work</code> simultaneously, the assert fires. It never did.</li>
+<li><code>asyncio.to_thread</code> is the key: it keeps the event loop responsive while real threads do the heavy lifting.</li>
+</ul>
+<p>Run it with:</p>
+<ul>
+<li>Standard CPython 3.13 — GIL ON</li>
+</ul>
+
+      <div class="code-block">
+        <small class="language-label">bash</small>
+        <pre><code class="hljs language-bash">uv run --python cpython-3.13 gil-benchmark/main.py</code></pre>
+      </div>
+    <ul>
+<li>Free-threaded CPython 3.13 — GIL OFF</li>
+</ul>
+
+      <div class="code-block">
+        <small class="language-label">python</small>
+        <pre><code class="hljs language-python">uv run --python cpython-<span class="hljs-number">3.13</span>+freethreaded gil-benchmark/main.py</code></pre>
+      </div>
+    <h2>Results</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Number of tasks</strong></th>
+<th><strong>Elapsed time (with GIL)</strong></th>
+<th><strong>Elapsed time (without GIL)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100</td>
+<td>6.8s</td>
+<td>1.6s</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>67.9s</td>
+<td>15.4s</td>
+</tr>
+<tr>
+<td>10000</td>
+<td>693.0s</td>
+<td>152.9s</td>
+</tr>
+<tr>
+<td><strong>Semaphore held</strong></td>
+<td>✅ Never exceeded 10</td>
+<td>✅ Never exceeded 10</td>
+</tr>
+</tbody></table>
+<h2>What I took away</h2>
+<p>The semaphore worked perfectly in both cases — the assert <strong>never</strong> fired, and the active counter <strong>never</strong> breached 10. That part is purely <code>asyncio</code> doing its job, GIL or not.</p>
+<p>The elapsed time is where it gets interesting. With the GIL, threads take turns on the CPU even though the semaphore allows 10 at once — so each 150ms task ends up taking longer in practice. Without the GIL, those 10 threads genuinely run in parallel across cores.</p>
+<p>It&#39;s a small script, but it makes something abstract very concrete: the GIL isn&#39;t a myth, and removing it has a real, measurable effect on CPU-bound threaded workloads. <strong>Python 3.13</strong>&#39;s free-threaded build seems like something worth paying attention to.</p>
+<h2>What I don&#39;t understand</h2>
+<h3>Are these async threads <strong>actually</strong> thread-safe?</h3>
+<p>This is something I kept poking at while writing this. <code>asyncio</code> is <strong>not</strong> thread-safe — it&#39;s designed to run on a <strong>single</strong> thread, and its primitives like <code>asyncio.Semaphore</code> are <strong>not</strong> safe to use across OS threads.</p>
+<p>But the script works correctly, and here&#39;s why I think it does: the semaphore is always acquired inside the event loop (in the <code>async with semaphore</code> block) <strong>before</strong> <code>asyncio.to_thread</code> spawns the OS thread. By the time <code>do_work</code> runs in a real thread, the semaphore is already held. The thread never touches it. When <code>do_work</code> returns, control goes back to the event loop, which releases it. The asyncio and threading worlds never actually cross.</p>
+<p>The moment you touch asyncio primitives from inside a thread — say, calling <code>semaphore.release()</code> from <code>do_work</code> — you&#39;re in undefined territory.</p>
+<p>I still find the boundary between the two worlds a bit fuzzy in practice. If you have a cleaner mental model for this, I&#39;d love to hear it.</p>
+<p><em>The full script is available on <a href="https://github.com/pyrsuit/scripts/blob/main/gil-benchmark/main.py">GitHub</a>. The test numbers will vary by machine.</em></p>
+<!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_x12gxm = {
+						base: new URL("..", location).pathname.slice(0, -1),
+						assets: "/pyrsuit-dev-blog"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../_app/immutable/entry/start.DaLiWHzZ.js"),
+						import("../_app/immutable/entry/app.DxLaIUh4.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null,
+							remote: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
