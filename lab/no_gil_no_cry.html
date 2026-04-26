@@ -6,27 +6,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="../_app/immutable/assets/0.BWj8LSPE.css" rel="stylesheet">
-		<link rel="modulepreload" href="../_app/immutable/entry/start.Cc71Q2WT.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/diacltbI.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.iOHUENvv.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/kOLLga21.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/I71bVGGT.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CDsez_Gm.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Ciy5EP2b.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DcSbw-Oq.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/DPYddxHY.js">
-		<link rel="modulepreload" href="../_app/immutable/entry/app.WGrZEhcB.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CYVdW5Wj.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.B85Avg_y.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Dh7Hj6G1.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CWjPdQEG.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DoCYdl2-.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/0.CVeQQ87l.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.BP2PKJWn.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DORQWOit.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/D0mMVKcf.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CK7KUTJ6.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DHXagj1S.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/C9bNCGpd.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/5.RfHvAA40.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/dNziSGQX.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/t5hUfGHv.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.CGnwCNBj.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/UBc2C1ER.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DLjVo20G.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/BT5y1Oxm.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
 	</head>
@@ -140,7 +140,7 @@ _lock = threading.Lock()
     <p>A few things worth noting:</p>
 <ul>
 <li>The <code>semaphore</code> is global and created at module level - <code>asyncio.Semaphore</code> must be created in the same event loop it&#39;s used in, which <code>asyncio.run()</code> handles for us here.</li>
-<li>The <code>_active</code> counter and <code>assert</code> are there to <strong>verify</strong> the semaphore is actually working - if more than <code>CONCURRENCY</code> threads ever enter <code>do_work</code> simultaneously, the assert fires. It never did.</li>
+<li>The <code>_active</code> counter and <code>assert</code> are there to <strong>verify</strong> the semaphore is actually working - if more than <code>CONCURRENCY</code> threads ever enter <code>do_work</code> simultaneously, the assert fires.</li>
 <li><code>asyncio.to_thread</code> is the key: it keeps the event loop responsive while real threads do the heavy lifting.</li>
 </ul>
 <p>Run it with:</p>
@@ -190,6 +190,7 @@ _lock = threading.Lock()
 <td>✅ Never exceeded 10</td>
 </tr>
 </tbody></table>
+<p><em>The test numbers will vary by machine.</em></p>
 <h2>What I took away</h2>
 <p>The semaphore worked perfectly in both cases - the assert <strong>never</strong> fired, and the active counter <strong>never</strong> breached 10. That part is purely <code>asyncio</code> doing its job, GIL or not.</p>
 <p>The elapsed time is where it gets interesting. With the GIL, threads take turns on the CPU even though the semaphore allows 10 at once - so each 150ms task ends up taking longer in practice. Without the GIL, those 10 threads genuinely run in parallel across cores.</p>
@@ -199,12 +200,12 @@ _lock = threading.Lock()
 <p>But the script works correctly, and here&#39;s why I think it does: the semaphore is always acquired inside the event loop (in the <code>async with semaphore</code> block) <strong>before</strong> <code>asyncio.to_thread</code> spawns the OS thread. By the time <code>do_work</code> runs in a real thread, the semaphore is already held. The thread never touches it. When <code>do_work</code> returns, control goes back to the event loop, which releases it. The asyncio and threading worlds never actually cross.</p>
 <p>The moment you touch asyncio primitives from inside a thread - say, calling <code>semaphore.release()</code> from <code>do_work</code> - you&#39;re in undefined territory.</p>
 <p>I still find the boundary between the two worlds a bit fuzzy in practice. If you have a cleaner mental model for this, I&#39;d love to hear it.</p>
-<p><em>The full script is available on <a href="https://github.com/pyrsuit/scripts/blob/main/gil-benchmark/main.py">GitHub</a>. The test numbers will vary by machine.</em></p>
+<p><em>The full script is available on <a href="https://github.com/pyrsuit/scripts/blob/main/gil-benchmark/main.py">GitHub</a>.</em></p>
 <!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_1lkhec2 = {
+					__sveltekit_1ov4t7 = {
 						base: new URL("..", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -212,8 +213,8 @@ _lock = threading.Lock()
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.Cc71Q2WT.js"),
-						import("../_app/immutable/entry/app.WGrZEhcB.js")
+						import("../_app/immutable/entry/start.iOHUENvv.js"),
+						import("../_app/immutable/entry/app.B85Avg_y.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
