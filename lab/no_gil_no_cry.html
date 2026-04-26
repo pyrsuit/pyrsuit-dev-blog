@@ -6,27 +6,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="../_app/immutable/assets/0.BWj8LSPE.css" rel="stylesheet">
-		<link rel="modulepreload" href="../_app/immutable/entry/start.DXbtFzbF.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/OIscdeHM.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.Cc71Q2WT.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/diacltbI.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/I71bVGGT.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CDsez_Gm.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Ciy5EP2b.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DcSbw-Oq.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/gIA0Or_Z.js">
-		<link rel="modulepreload" href="../_app/immutable/entry/app.V1BzhBJ3.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DPYddxHY.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.WGrZEhcB.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Dh7Hj6G1.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CWjPdQEG.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DoCYdl2-.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/0.D1QqCCGv.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.CVeQQ87l.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DORQWOit.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/D0mMVKcf.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CK7KUTJ6.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DHXagj1S.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/B6gRc62r.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/5.CjpYYSBR.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/B40_mMY3.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/C9bNCGpd.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.RfHvAA40.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/dNziSGQX.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DLjVo20G.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/BT5y1Oxm.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
 	</head>
@@ -194,8 +194,7 @@ _lock = threading.Lock()
 <p>The semaphore worked perfectly in both cases - the assert <strong>never</strong> fired, and the active counter <strong>never</strong> breached 10. That part is purely <code>asyncio</code> doing its job, GIL or not.</p>
 <p>The elapsed time is where it gets interesting. With the GIL, threads take turns on the CPU even though the semaphore allows 10 at once - so each 150ms task ends up taking longer in practice. Without the GIL, those 10 threads genuinely run in parallel across cores.</p>
 <p>It&#39;s a small script, but it makes something abstract very concrete: the GIL isn&#39;t a myth, and removing it has a real, measurable effect on CPU-bound threaded workloads. <strong>Python 3.13</strong>&#39;s free-threaded build seems like something worth paying attention to.</p>
-<h2>What I don&#39;t understand</h2>
-<h3>Are these async threads <strong>actually</strong> thread-safe?</h3>
+<h2>Are these async threads <strong>actually</strong> thread-safe?</h2>
 <p>This is something I kept poking at while writing this. <code>asyncio</code> is <strong>not</strong> thread-safe - it&#39;s designed to run on a <strong>single</strong> thread, and its primitives like <code>asyncio.Semaphore</code> are <strong>not</strong> safe to use across OS threads.</p>
 <p>But the script works correctly, and here&#39;s why I think it does: the semaphore is always acquired inside the event loop (in the <code>async with semaphore</code> block) <strong>before</strong> <code>asyncio.to_thread</code> spawns the OS thread. By the time <code>do_work</code> runs in a real thread, the semaphore is already held. The thread never touches it. When <code>do_work</code> returns, control goes back to the event loop, which releases it. The asyncio and threading worlds never actually cross.</p>
 <p>The moment you touch asyncio primitives from inside a thread - say, calling <code>semaphore.release()</code> from <code>do_work</code> - you&#39;re in undefined territory.</p>
@@ -205,7 +204,7 @@ _lock = threading.Lock()
 			
 			<script>
 				{
-					__sveltekit_1ta82jb = {
+					__sveltekit_1lkhec2 = {
 						base: new URL("..", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -213,8 +212,8 @@ _lock = threading.Lock()
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.DXbtFzbF.js"),
-						import("../_app/immutable/entry/app.V1BzhBJ3.js")
+						import("../_app/immutable/entry/start.Cc71Q2WT.js"),
+						import("../_app/immutable/entry/app.WGrZEhcB.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
