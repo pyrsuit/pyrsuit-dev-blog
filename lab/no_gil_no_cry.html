@@ -6,27 +6,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="../_app/immutable/assets/0.BWj8LSPE.css" rel="stylesheet">
-		<link rel="modulepreload" href="../_app/immutable/entry/start.D41XJYV5.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/8p_RLAII.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.mmJYFek1.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CpkXbg_2.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/I71bVGGT.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CDsez_Gm.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Ciy5EP2b.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DcSbw-Oq.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/CcBTYIQM.js">
-		<link rel="modulepreload" href="../_app/immutable/entry/app.DBbU5-Mo.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/VLpBWsYB.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.DDYPrlFP.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Dh7Hj6G1.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CWjPdQEG.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DoCYdl2-.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/0.BBhc8YjQ.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.D-2wtLj1.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DORQWOit.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/D0mMVKcf.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CK7KUTJ6.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DHXagj1S.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/CqnS9aAy.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/5.Dax0SLeb.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/D5fYoLuV.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/6CClGQ9i.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.CwIde5kd.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B2bcAe5r.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DLjVo20G.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/BT5y1Oxm.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
 	</head>
@@ -46,7 +46,7 @@
 <p>The GIL is a <strong>mutex</strong> inside <strong>CPython</strong> that protects the interpreter&#39;s internal state. It means only one thread can execute <strong>Python</strong> bytecode at any moment. For I/O-bound work this barely matters - threads spend most of their time waiting anyway. But for CPU-bound work, it&#39;s a hard ceiling: no matter how many cores your machine has, standard CPython threads <strong>don&#39;t truly parallelize</strong>.</p>
 <p>The free-threaded build <strong>removes</strong> the GIL, allowing threads to run <strong>Python</strong> bytecode simultaneously across cores.</p>
 <h2>The setup</h2>
-<p><strong>Python:</strong> CPython 3.13 (with GIL) vs CPython 3.13+freethreaded (no GIL)<br><strong>Tool:</strong> <a href="https://docs.astral.sh/uv/"><code>uv</code></a> - handles installing both <strong>Python</strong> builds and running the script, <strong>no</strong> virtualenv juggling needed</p>
+<p><strong>Python:</strong> <strong>CPython 3.13</strong> (with GIL) vs <strong>CPython 3.13+freethreaded</strong> (no GIL)<br><strong>Tool:</strong> <a href="https://docs.astral.sh/uv/"><code>uv</code></a> - handles installing both <strong>Python</strong> builds and running the script, <strong>no</strong> virtualenv juggling needed</p>
 <p>I originally wanted to use <strong>Python 3.14</strong>, which is the latest release. But when I tried to install the free-threaded build, <code>uv</code> hit a wall on my machine:</p>
 
       <div class="code-block">
@@ -66,6 +66,7 @@ uv python install cpython-3.13+freethreaded</code></pre>
 <p><strong><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.gather"><code>asyncio.gather</code></a></strong> - spawns all tasks concurrently from a single event loop.</p>
 <p><strong><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.to_thread"><code>asyncio.to_thread</code></a></strong> - dispatch a synchronous function onto a real OS thread from an async coroutine. Each task gets its own thread, which is where GIL contention actually happens.</p>
 <p><strong><a href="https://docs.python.org/3/library/asyncio-sync.html#asyncio.Semaphore"><code>asyncio.Semaphore</code></a></strong> - limits how many threads are doing work at the same time. Acquired in the async layer <strong>before</strong> the thread is spawned, so the event loop is the gatekeeper. If set to 10, at most 10 threads crunch numbers simultaneously.</p>
+<p><strong><a href="https://docs.python.org/3/library/threading.html#threading.Lock"><code>threading.Lock</code></a></strong> - protects the <code>_active</code> counter that tracks how many threads are currently inside <code>do_work</code>. Since multiple OS threads touch that counter simultaneously, a plain asyncio lock won&#39;t do - it has to be a threading primitive that works at the OS level.</p>
 <p>The work itself is a pure CPU-bound busy loop - no I/O, no sleeping - because that&#39;s exactly the condition where the GIL hurts most.</p>
 <h2>The script</h2>
 
@@ -204,7 +205,7 @@ _lock = threading.Lock()
 			
 			<script>
 				{
-					__sveltekit_1l8khiq = {
+					__sveltekit_x3sq8m = {
 						base: new URL("..", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -212,8 +213,8 @@ _lock = threading.Lock()
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.D41XJYV5.js"),
-						import("../_app/immutable/entry/app.DBbU5-Mo.js")
+						import("../_app/immutable/entry/start.mmJYFek1.js"),
+						import("../_app/immutable/entry/app.DDYPrlFP.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
