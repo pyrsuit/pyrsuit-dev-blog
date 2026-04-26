@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { articles } from '$lib/blog/articles';
+  import { articles } from '$lib/lab/articles';
   import { base } from '$app/paths';
 </script>
 
