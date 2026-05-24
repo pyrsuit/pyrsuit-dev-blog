@@ -7,5 +7,5 @@
   <p class="font-extralight text-base text-gray-800">
     If you enjoy the blog and want to say hi, share feedback, or just chat - I'd love to hear from you  I'd love to hear from you 😊
   </p>
-  <a href="mailto:pyrsuit@pyrsuit.dev" class="font-light">pyrsuit@pyrsuit.dev</a>
+  <a href="mailto:hello@pyrsuit.dev" class="font-light">hello@pyrsuit.dev</a>
 </section>
