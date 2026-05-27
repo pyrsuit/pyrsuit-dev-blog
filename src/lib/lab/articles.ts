@@ -1,5 +1,10 @@
 export const articles = [
 	{
+		slug: 'when_in_bologna',
+		title: 'When in Bologna',
+		date: 'May 27, 2026'
+	},
+	{
 		slug: 'no_gil_no_cry',
 		title: 'No GIL, no cry?',
 		date: 'April 26, 2026'
