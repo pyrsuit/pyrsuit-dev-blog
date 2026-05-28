@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="../_app/immutable/assets/0.BWj8LSPE.css" rel="stylesheet">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.BUQf-JgQ.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DuRdi8cl.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/I71bVGGT.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CDsez_Gm.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Ciy5EP2b.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DcSbw-Oq.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/C3HSKan6.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.B2J8R6vF.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Dh7Hj6G1.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CWjPdQEG.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DoCYdl2-.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.C1v3NHdK.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DORQWOit.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D0mMVKcf.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CK7KUTJ6.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DHXagj1S.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/_M-K6xWL.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.Cu9bseAr.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/AbjjgBHM.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Cs0pyFfa.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/BT5y1Oxm.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/><!--]-->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
+  <h1 class="text-2xl font-light tracking-tight">When in Bologna, on message brokers</h1>
+  <time class="text-sm text-gray-600 ml-4">May 28, 2026</time>
+</div>
+
+<blockquote>
+<p><em>Queues, topics, dead letters, and a broker I had never heard of</em></p>
+</blockquote>
+<p>Day two of <a href="https://2026.pycon.it/en/schedule/2026-05-28">PyCon Italy 2026</a>, and I&#39;ve been at a <a href="https://2026.pycon.it/en/event/hands-on-amqp-building-scalable-microservices-with-python-and-lavinmq">workshop</a> on building resilient microservices with <code>Python</code> and <strong><a href="https://lavinmq.com">LavinMQ</a></strong>.</p>
+<p>I signed up partly because it promised hands-on failure handling, dead letter exchanges, retries, and partly because I had never heard of <code>LavinMQ</code>.</p>
+<p>Message brokers and I have history. It started with <a href="https://www.rabbitmq.com">RabbitMQ</a>, then spent some time with <a href="https://kafka.apache.org">kafka</a>, and now I work day-to-day with <a href="https://activemq.apache.org">ActiveMQ</a>. So sitting in this workshop, listening to someone explain <code>AMQP</code> exchanges and bindings, I kept mapping everything back to what I already knew, and noting where it diverged.</p>
+<h2>What the workshop covered</h2>
+<p>The session built a distributed system from scratch. The tasks are available at <a href="https://workshop.lavinmq.com/#info">workshop.lavinmq.com</a>, so you can work through it at your own pace.</p>
+<p>A producer pushes tasks onto a queue, workers pull from it. Then Pub/Sub: one message fans out to several consumers through an exchange. Then the part I was there for: <em>what happens when things go wrong</em>.</p>
+<p>Dead-letter exchanges are the mechanism that ensures that when a message fails (or it&#39;s rejected), rather than silently dropping it, the broker routes it to a designated dead-letter queue. From there you can inspect it, retry it, alert on it.</p>
+<h2>The broker I did not know</h2>
+<p><code>LavinMQ</code> is a compatible alternative for <code>RabbitMQ</code> with a dramatically smaller footprint. Single binary, low memory, fast startup.</p>
+<p>If you have used <a href="https://pika.readthedocs.io/en/stable/">pika</a> with <code>RabbitMQ</code>, you need to change exactly one line: <strong>the connection URI</strong>. The mental model, exchanges, queues, bindings, routing keys map across directly.</p>
+<h2>What I actually think</h2>
+<p><code>RabbitMQ</code> was where I started, and it still sits in my head as the reference <code>AMQP</code> implementation. The routing model is expressive: direct, topic, fanout, headers, exchanges give you a lot of flexibility before you have to write any application logic.</p>
+<p><code>kafka</code> is a different category. It is not a message queue, it is an append-only log that happens to be consumable by many clients. You do not <code>pop</code> messages off a queue. You read from an <strong>offset</strong>, and the log stays there. That makes replay easy, and stream processing (joining, windowing, aggregating) possible. But the operational surface is a bit more complex: <code>kafka</code>&#39;s own protocol, <code>ZooKeeper</code> or <code>KRaft</code>, topic partitioning strategies, consumer group rebalancing.</p>
+<p><code>ActiveMQ</code> is where I am now. For <code>Python</code> work, it is less convenient than it could be, and the client support is less mature than <code>pika</code>&#39;s.</p>
+<p><code>LavinMQ</code> is compelling for exactly the use case where <code>RabbitMQ</code> is the obvious answer but you want a lighter deployment, better throughput per unit of memory and you are already using <code>pika</code>.</p>
+<p>These tools look similar from the outside, they all move messages from producers to consumers, but the abstractions they expose are quite different. <code>RabbitMQ</code> and <code>LavinMQ</code> give you a smart broker that routes messages on your behalf. <code>kafka</code> gives you a dumb pipe and smart consumers. <code>ActiveMQ</code> tries to be both.</p>
+<table>
+<thead>
+<tr>
+<th>Broker</th>
+<th>Protocol</th>
+<th>Model</th>
+<th>Best for</th>
+<th>Ops weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RabbitMQ</code></td>
+<td><code>AMQP 0-9-1</code></td>
+<td>Push, smart broker</td>
+<td>Task queues, routing, RPC</td>
+<td>low–medium</td>
+</tr>
+<tr>
+<td><code>kafka</code></td>
+<td><code>kafka</code> binary</td>
+<td>Pull, log append</td>
+<td>Event streaming, replay, analytics</td>
+<td>high</td>
+</tr>
+<tr>
+<td><code>ActiveMQ</code></td>
+<td><code>AMQP 1.0</code></td>
+<td>Push + pull, <code>JMS</code></td>
+<td>Enterprise <code>JMS</code>, legacy integration</td>
+<td>medium</td>
+</tr>
+<tr>
+<td><code>LavinMQ</code></td>
+<td><code>AMQP 0-9-1</code></td>
+<td>Push, smart broker</td>
+<td><code>RabbitMQ</code> workloads, low footprint</td>
+<td>low</td>
+</tr>
+</tbody></table>
+<p><em>Note: the protocol gap between <code>AMQP 0-9-1</code> and <code>1.0</code> is <strong>significant</strong>. They are <strong>not</strong> interoperable. <code>kafka</code> exactly-once delivery requires idempotent producers and transactional consumers.</em></p>
+<p>So when in Bologna, keep doing as the Bolognesi do - and today that means knowing that the best broker is the one that fits both your <strong>architecture</strong> and your <strong>people&#39;s skills</strong>.</p>
+<!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fna4m3 = {
+						base: new URL("..", location).pathname.slice(0, -1),
+						assets: "/pyrsuit-dev-blog"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../_app/immutable/entry/start.BUQf-JgQ.js"),
+						import("../_app/immutable/entry/app.B2J8R6vF.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null,
+							remote: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
