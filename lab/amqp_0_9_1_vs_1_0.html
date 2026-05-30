@@ -32,29 +32,55 @@
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
-  <h1 class="text-2xl font-light tracking-tight">When in Bologna</h1>
-  <time class="text-sm text-gray-600 ml-4">May 27, 2026</time>
+  <h1 class="text-2xl font-light tracking-tight">AMQP 0-9-1 vs 1.0</h1>
+  <time class="text-sm text-gray-600 ml-4">May 30, 2026</time>
 </div>
 
-<blockquote>
-<p><em>The story of <del>my first open source contribution</del></em></p>
-</blockquote>
-<p>I&#39;m reporting from <strong><a href="https://2026.pycon.it/en">PyCon Italy 2026</a></strong>, Bologna, the city of ragù and mortadella, and, as of today, my very first steps toward an open source contribution.</p>
-<p>I have always thought open source contributors were kind of <strong>bad ass</strong>. They are the people behind the tools I use every day, quietly fixing and improving things. Every time I <code>pip install</code> something and it works, there is a person somewhere who made that happen.</p>
-<p>The conference kicked off with an Open Day dedicated to communities. I spent it at the <strong><a href="https://2026.pycon.it/en/event/django-off-the-med">Django Off The Med</a></strong> workshop, which is a sprint session inspired by the <a href="https://buttondown.com/django-on-the-med">Django On The Med</a> gatherings, brought to the city of Bologna for the conference.</p>
-<p>The format is simple: you clone the repo, set up the test suite, and start looking for something to work on in the <a href="https://code.djangoproject.com/query">bug tracker</a>.</p>
-<h2><del>My first open source contribution</del></h2>
-<p><code>Django</code> and I are not really there yet. I don&#39;t use it that much, so jumping straight into contributing to the framework itself felt like a stretch too far for one morning.</p>
-<p>What I did instead turned out to be more relevant to me anyway. I set up a project where I got to interact a bit more with <strong><a href="https://docs.djangoproject.com/en/6.0/ref/contrib/gis/">GeoDjango</a></strong>, <code>Django</code>&#39;s built-in geospatial extension. (I work with weather data, and spatial queries come with the territory.)</p>
-<p>Turns out <code>GeoDjango</code> offers quite a lot. For example:</p>
-<ul>
-<li><strong>Geometry model fields</strong> - <code>PointField</code>, <code>PolygonField</code>, <code>MultiPolygonField</code> which map directly to OGC geometry types in <code>PostGIS</code>.</li>
-<li><strong>Spatial ORM lookups</strong> - you can query with things like <code>filter(poly__dwithin=(geom, D(km=5)))</code> directly in the <code>ORM</code>, no raw SQL needed.</li>
-<li><strong>Distance calculations built in</strong> - annotate a queryset with <code>Distance(&quot;point&quot;, reference_point)</code> and get back a <code>Distance</code> object you can express in various units: <code>.km</code>, <code>.mi</code>, <code>.m</code>.</li>
-</ul>
-<p>One thing I keep turning over: there is a real difference between writing raw <code>SQL</code> and query builders, where you have full control over what hits the database, and using an <code>ORM</code>. Neither is obviously better, and for spatial data specifically I am curious how the abstractions hold up when queries get complex.</p>
-<p>But when in Bologna, do as the Bolognesi do - and apparently that means leaving with something to explore.</p>
-<!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
+<p>After the <a href="https://pyrsuit.dev/lab/when_in_bologna_on_message_brokers">previous post</a> I got a follow-up question: why are <code>AMQP 0-9-1</code> and <code>1.0</code> <strong>not</strong> interoperable?</p>
+<p>The difference for the application side: <strong>who is responsible for routing your messages, and what happens when delivery fails.</strong></p>
+<h2>Similar name, different protocol</h2>
+<p><code>AMQP 1.0</code> is not a newer version of <code>0-9-1</code>. It is a ground-up redesign. So this is not <code>Python 3.11</code> vs <code>3.12</code>. It is closer to two languages that happen to be spelled the same.</p>
+<h2>Where the routing lives</h2>
+<p><code>AMQP 0-9-1</code> puts routing <strong>inside the protocol</strong>. Exchanges, queues, bindings, and routing keys are part of the protocol. You declare an exchange, bind a queue to it with a routing key, and publish to the exchange with a key. From then on the broker fans messages out for you. Your application only ever says <em>&quot;publish to exchange X with key Y&quot;</em> or <em>&quot;consume from queue Z&quot;</em> - the wiring in between is the broker&#39;s task.</p>
+<p><code>AMQP 1.0</code> has <strong>none of that</strong> in the protocol. No exchanges, no bindings, no routing keys. You attach a <strong>link</strong> to an address: a <strong>target</strong> when you send, a <strong>source</strong> when you receive. What that address resolves to - a queue, a topic - is entirely up to the broker. The protocol itself only defines how two peers move messages across a link. It deliberately refuses to say how a broker should route anything.</p>
+<p>The practical consequence: with <code>1.0</code>, <strong>routing is not a protocol feature you configure</strong>.</p>
+<h2>The dead-letter queue</h2>
+<p>Dead-letter queues are defined in neither protocol. Both in <code>RabbitMQ</code> and <code>ActiveMQ</code> it comes with the broker, not with the protocol.</p>
+<h2>Whose job is it?</h2>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th><code>AMQP 0-9-1</code></th>
+<th><code>AMQP 1.0</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Routing topology</td>
+<td>Exchanges, bindings, routing keys - <strong>in the protocol</strong></td>
+<td>Not in the protocol; links attach to addressed nodes</td>
+</tr>
+<tr>
+<td>How you address a message</td>
+<td>Publish to <code>(exchange, routing key)</code></td>
+<td>Attach a link to a target/source <strong>address</strong></td>
+</tr>
+<tr>
+<td>Mental model</td>
+<td>Smart broker, you declare topology</td>
+<td>Wire protocol between peers, broker semantics live elsewhere</td>
+</tr>
+</tbody></table>
+<p>So from a user&#39;s point of view, with <code>0-9-1</code> you reason about <em>topology</em> - exchanges, bindings - you wired up once and forgot:</p>
+<div class="mermaid">flowchart LR
+    P["Producer"] -->|"exchange X, key Y"| E["Exchange (direct, topic, fanout)"]
+    E -->|binding| QA["Queue A"]
+    E -->|binding| QB["Queue B"]
+    QA --> CA["Consumer"]
+    QB --> CB["Consumer"]</div><p>With <code>1.0</code> you reason about <em>addresses and outcomes</em>, and then you go read your broker&#39;s documentation to learn what those addresses and outcomes actually do:</p>
+<div class="mermaid">flowchart LR
+    S["Publisher"] -->|"target: 'queue/new'"| A["Broker 'queue/new'"]
+    A -->|"source: 'queue/new'"| R["Subscriber"]</div><!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
 			
 			<script>
 				{
