@@ -1,5 +1,10 @@
 export const articles = [
 	{
+		slug: 'amqp_0_9_1_vs_1_0',
+		title: 'AMQP 0-9-1 vs 1.0',
+		date: 'May 30, 2026'
+	},
+	{
 		slug: 'when_in_bologna_on_message_brokers',
 		title: 'When in Bologna, on message brokers',
 		date: 'May 28, 2026'
