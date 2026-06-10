@@ -22,6 +22,12 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&display=swap"
     rel="stylesheet"
   />
+  <link
+    rel="alternate"
+    type="application/feed+json"
+    title="pyrsuit dev blog"
+    href="{base}/feed.json"
+  />
 </svelte:head>
 
 <nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm">

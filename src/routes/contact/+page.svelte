@@ -1,3 +1,7 @@
+<script>
+  import { base } from '$app/paths';
+</script>
+
 <svelte:head>
   <title>Contact</title>
 </svelte:head>
@@ -8,4 +12,7 @@
     If you enjoy the blog and want to say hi, share feedback, or just chat - I'd love to hear from you  I'd love to hear from you 😊
   </p>
   <a href="mailto:hello@pyrsuit.dev" class="font-light">hello@pyrsuit.dev</a>
+  <p class="font-extralight text-base text-gray-800 mt-6">
+    You can also follow the blog via the <a href="{base}/feed.json" class="font-light">JSON feed</a> to get updates on new Lab articles and TIL entries.
+  </p>
 </section>
