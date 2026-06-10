@@ -13,6 +13,6 @@
   </p>
   <a href="mailto:hello@pyrsuit.dev" class="font-light">hello@pyrsuit.dev</a>
   <p class="font-extralight text-base text-gray-800 mt-6">
-    You can also follow the blog via the <a href="{base}/feed.json" class="font-light">JSON feed</a> to get updates on new Lab articles and TIL entries.
+    You can also follow the blog via the <a href="{base}/feed.json" class="font-light">JSON feed</a> to get updates on new articles.
   </p>
 </section>

@@ -1,5 +1,4 @@
 import { articles } from '$lib/lab/articles';
-import tilData from '$lib/til.json';
 
 const SITE_URL = 'https://pyrsuit.dev';
 
@@ -18,16 +17,7 @@ export function GET() {
 		tags: ['lab']
 	}));
 
-	const tilItems = (tilData as Array<{ title: string; date: string; text: string }>).map((t) => ({
-		id: `${SITE_URL}/til#${encodeURIComponent(t.title)}`,
-		url: `${SITE_URL}/til`,
-		title: t.title,
-		content_text: t.text,
-		date_published: parseDate(t.date).toISOString(),
-		tags: ['til']
-	}));
-
-	const allItems = [...labItems, ...tilItems].sort(
+	const allItems = [...labItems].sort(
 		(a, b) => new Date(b.date_published).getTime() - new Date(a.date_published).getTime()
 	);
 
@@ -36,7 +26,7 @@ export function GET() {
 		title: 'pyrsuit dev blog',
 		home_page_url: SITE_URL,
 		feed_url: `${SITE_URL}/feed.json`,
-		description: 'Lab articles and TIL entries from pyrsuit dev blog',
+		description: 'Articles from pyrsuit dev blog',
 		items: allItems
 	};
 
