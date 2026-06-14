@@ -1,5 +1,10 @@
 export const articles = [
 	{
+		slug: 'local_shopping_agent',
+		title: 'A meal planner with PydanticAI and Ollama',
+		date: 'June 14, 2026'
+	},
+	{
 		slug: 'amqp_0_9_1_vs_1_0',
 		title: 'AMQP 0-9-1 vs 1.0',
 		date: 'May 30, 2026'
