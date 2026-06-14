@@ -6,6 +6,15 @@
   "description": "Articles from pyrsuit dev blog",
   "items": [
     {
+      "id": "https://pyrsuit.dev/lab/local_shopping_agent",
+      "url": "https://pyrsuit.dev/lab/local_shopping_agent",
+      "title": "A meal planner with PydanticAI and Ollama",
+      "date_published": "2026-06-14T00:00:00.000Z",
+      "tags": [
+        "lab"
+      ]
+    },
+    {
       "id": "https://pyrsuit.dev/lab/amqp_0_9_1_vs_1_0",
       "url": "https://pyrsuit.dev/lab/amqp_0_9_1_vs_1_0",
       "title": "AMQP 0-9-1 vs 1.0",
