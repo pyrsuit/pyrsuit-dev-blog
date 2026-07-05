@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="../_app/immutable/assets/0.De3EECBv.css" rel="stylesheet">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.CXhCfx2U.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DE9LWx6n.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/XgKt1ASm.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B6aYimKy.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B3ApAsT9.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B2Dah1Oa.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/LsOJ51gN.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.CmOgBJ6E.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CB8X9wEm.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Bvus1G3m.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D_isbnG0.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.fJL-TAcP.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/ZnaxL5IZ.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B1aDyhai.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D83vIoDp.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/6vcwwfk2.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DfrDVC9I.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.DqpxG3gC.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DhjbA8eZ.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/C2sTYLJy.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/BWCVGdwq.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/> <link rel="alternate" type="application/feed+json" title="pyrsuit dev blog" href="../feed.json"/><!--]-->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
+  <h1 class="text-2xl font-light tracking-tight">A local coding agent with qwen2.5-coder and Ollama</h1>
+  <time class="text-sm text-gray-600 ml-4">July 5, 2026</time>
+</div>
+
+<blockquote>
+<p><em>Trying to run <a href="https://ollama.com/library/qwen2.5-coder/tags">qwen2.5-coder</a> as a coding agent on a machine with 16 GB of unified memory, no dedicated VRAM.</em></p>
+</blockquote>
+<h2>The setup</h2>
+<div class="mermaid">graph LR
+    A[OpenCode] --> B[Ollama in Docker]
+    B --> C[qwen2.5-coder:7b]</div><p><code>Ollama</code> runs in a plain Docker container, no GPU passthrough needed since the machine has unified memory shared between CPU and GPU rather than dedicated VRAM:</p>
+
+      <div class="code-block">
+        <small class="language-label">yaml</small>
+        <pre><code class="hljs language-yaml"><span class="hljs-attr">services:</span>
+  <span class="hljs-attr">ollama:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">ollama/ollama</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">ollama-qwen-coder</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;11434:11434&quot;</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">ollama_data:/root/.ollama</span></code></pre>
+      </div>
+    <p>Once it&#39;s up, the model gets pulled into the running container:</p>
+
+      <div class="code-block">
+        <small class="language-label">bash</small>
+        <pre><code class="hljs language-bash">docker <span class="hljs-built_in">exec</span> -it ollama-qwen-coder ollama pull qwen2.5-coder:7b</code></pre>
+      </div>
+    <p><strong><a href="https://opencode.ai">OpenCode</a></strong> is the coding agent. It talks to <code>Ollama</code>&#39;s OpenAI-compatible <code>/v1</code> endpoint, configured as just another provider:</p>
+
+      <div class="code-block">
+        <small class="language-label">json</small>
+        <pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;provider&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;ollama&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;npm&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@ai-sdk/openai-compatible&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;baseURL&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;http://localhost:11434/v1&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;models&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;qwen2.5-coder:7b&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;tools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span> <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre>
+      </div>
+    <h2>Why the tag matters</h2>
+<p>On a 16 GB unified-memory machine, there&#39;s no separate VRAM budget - model, context, and everything else the OS needs compete for the same pool. The <a href="https://ollama.com/library/qwen2.5-coder/tags">tag list</a> spans from <code>0.5b</code> to <code>32b</code>, and picking the wrong one is the difference between &quot;runs&quot; and &quot;runs usably.&quot;</p>
+<h2>The experience</h2>
+<p><code>7b</code> was too small to be a coding agent. Asked to list the files in a directory, it didn&#39;t call the tool - it printed out what a tool call would look like:</p>
+
+      <div class="code-block">
+        <small class="language-label"></small>
+        <pre><code class="hljs language-">{&quot;name&quot;: <span class="hljs-string">&quot;glob&quot;</span>, <span class="hljs-string">&quot;arguments&quot;</span>: {&quot;<span class="hljs-selector-tag">pattern</span>&quot;: <span class="hljs-string">&quot;*&quot;</span>}}</code></pre>
+      </div>
+    <p>Instead of invoking <code>glob</code> through the API, it just wrote the JSON as text and stopped there.</p>
+<p>I&#39;d genuinely like to know if there&#39;s a model that fits in 16 GB of unified memory and can still handle small agentic tasks. The <a href="https://github.com/pyrsuit/qwen2-coder-local-setup">repo</a> is open for issues or PRs with your suggestions.</p>
+<!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1a4cruc = {
+						base: new URL("..", location).pathname.slice(0, -1),
+						assets: "/pyrsuit-dev-blog"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../_app/immutable/entry/start.CXhCfx2U.js"),
+						import("../_app/immutable/entry/app.CmOgBJ6E.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null,
+							remote: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
