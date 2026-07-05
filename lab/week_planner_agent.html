@@ -32,28 +32,27 @@
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
-  <h1 class="text-2xl font-light tracking-tight">When in Bologna</h1>
-  <time class="text-sm text-gray-600 ml-4">May 27, 2026</time>
+  <h1 class="text-2xl font-light tracking-tight">A training cycle planning agent</h1>
+  <time class="text-sm text-gray-600 ml-4">July 5, 2026</time>
 </div>
 
 <blockquote>
-<p><em>The story of <del>my first open source contribution</del></em></p>
+<p><em>An agent that turns office days, a workout split, and menstrual cycle phase into a scheduled week - exportable straight to a calendar.</em></p>
 </blockquote>
-<p>I&#39;m reporting from <strong><a href="https://2026.pycon.it/en">PyCon Italy 2026</a></strong>, Bologna, the city of ragù and mortadella, and, as of today, my very first steps toward an open source contribution.</p>
-<p>I have always thought open source contributors were kind of <strong>bad ass</strong>. They are the people behind the tools I use every day, quietly fixing and improving things. Every time I <code>pip install</code> something and it works, there is a person somewhere who made that happen.</p>
-<p>The conference kicked off with an Open Day dedicated to communities. I spent it at the <strong><a href="https://2026.pycon.it/en/event/django-off-the-med">Django Off The Med</a></strong> workshop, which is a sprint session inspired by the <a href="https://buttondown.com/django-on-the-med">Django On The Med</a> gatherings, brought to the city of Bologna for the conference.</p>
-<p>The format is simple: you clone the repo, set up the test suite, and start looking for something to work on in the <a href="https://code.djangoproject.com/query">bug tracker</a>.</p>
-<h2><del>My first open source contribution</del></h2>
-<p><code>Django</code> and I are not really there yet. I don&#39;t use it that much, so jumping straight into contributing to the framework itself felt like a stretch too far for one morning.</p>
-<p>What I did instead turned out to be more relevant to me anyway. I set up a project where I got to interact a bit more with <strong><a href="https://docs.djangoproject.com/en/6.0/ref/contrib/gis/">GeoDjango</a></strong>, <code>Django</code>&#39;s built-in geospatial extension. (I work with weather data, and spatial queries come with the territory.)</p>
-<p>Turns out <code>GeoDjango</code> offers quite a lot. For example:</p>
-<ul>
-<li><strong>Geometry model fields</strong> - <code>PointField</code>, <code>PolygonField</code>, <code>MultiPolygonField</code> which map directly to OGC geometry types in <code>PostGIS</code>.</li>
-<li><strong>Spatial ORM lookups</strong> - you can query with things like <code>filter(poly__dwithin=(geom, D(km=5)))</code> directly in the <code>ORM</code>, no raw SQL needed.</li>
-<li><strong>Distance calculations built in</strong> - annotate a queryset with <code>Distance(&quot;point&quot;, reference_point)</code> and get back a <code>Distance</code> object you can express in various units: <code>.km</code>, <code>.mi</code>, <code>.m</code>.</li>
-</ul>
-<p>One thing I keep turning over: there is a real difference between writing raw <code>SQL</code> and query builders, where you have full control over what hits the database, and using an <code>ORM</code>. Neither is obviously better, and for spatial data specifically I am curious how the abstractions hold up when queries get complex.</p>
-<p>But when in Bologna, do as the Bolognesi do - and apparently that means leaving with something to explore.</p>
+<h2>How it works</h2>
+<div class="mermaid">graph LR
+    A[CLI prompts] --> B[WeekInput]
+    B --> C[Pydantic AI Agent]
+    C --> D[WeekPlan]
+    D --> E[CLI output]
+    D --> F[.ics export]</div><p>You answer a few prompts - office days, long office days, how many strength/climbing/running/yoga sessions you want, rest days, cycle phase, and any notes - and the agent returns a day-by-day plan with intensity levels and a load summary, optionally exported to your calendar.</p>
+<h2>The components</h2>
+<p><strong><code>WeekInput</code></strong> bundles the week&#39;s constraints: <code>office_days</code>, <code>long_days</code> (workdays that run until 7pm), a <code>WorkoutSplit</code> across strength, climbing, running, yoga and &quot;random&quot;, the current <code>CyclePhase</code>, and free-text notes.</p>
+<p><strong>The system prompt</strong> (<code>prompts.py</code>) is where the actual planning logic lives, not in code. It encodes training load guidance per cycle phase - easing off in the menstrual phase, going hard at ovulation, tapering through the luteal phase - commute and time constraints on office days, and placement rules: never two high-intensity days back to back, keep strength and climbing at least a day apart, put climbing before home-office days to protect recovery.</p>
+<p><strong><code>WeekPlan</code></strong>, the structured output, is enforced with Pydantic AI&#39;s <a href="https://ai.pydantic.dev/output/"><code>NativeOutput</code></a> - seven <code>ScheduledActivity</code> entries (activity, intensity, optional start time, notes) plus a summary and an overall load assessment.</p>
+<p><strong><code>gemma4:e2b</code></strong> runs locally through <code>Ollama</code>, the same setup as the <a href="https://pyrsuit.dev/lab/local_shopping_agent">meal planner</a> agent - <code>OllamaProvider</code> pointed at the OpenAI-compatible <code>/v1</code> endpoint.</p>
+<p><strong><code>calendar_sync.py</code></strong> exports the plan to <code>.ics</code> via the <code>icalendar</code> package, so the week goes straight from terminal to calendar app.</p>
+<p>Repo and setup are in the <a href="https://github.com/pyrsuit/week-planner-agent">README</a>.</p>
 <!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
 			
 			<script>

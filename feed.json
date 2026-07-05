@@ -6,6 +6,15 @@
   "description": "Articles from pyrsuit dev blog",
   "items": [
     {
+      "id": "https://pyrsuit.dev/lab/week_planner_agent",
+      "url": "https://pyrsuit.dev/lab/week_planner_agent",
+      "title": "A training cycle planning agent",
+      "date_published": "2026-07-05T00:00:00.000Z",
+      "tags": [
+        "lab"
+      ]
+    },
+    {
       "id": "https://pyrsuit.dev/lab/qwen2_coder_local_setup",
       "url": "https://pyrsuit.dev/lab/qwen2_coder_local_setup",
       "title": "A local coding agent with qwen2.5-coder",
