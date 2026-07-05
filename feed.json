@@ -8,7 +8,7 @@
     {
       "id": "https://pyrsuit.dev/lab/qwen2_coder_local_setup",
       "url": "https://pyrsuit.dev/lab/qwen2_coder_local_setup",
-      "title": "A local coding agent with Qwen2.5-Coder",
+      "title": "A local coding agent with qwen2.5-coder",
       "date_published": "2026-07-05T00:00:00.000Z",
       "tags": [
         "lab"
