@@ -50,7 +50,7 @@ docker exec -it ollama-qwen-coder ollama pull qwen2.5-coder:7b
 
 ## Why the tag matters
 
-On a 16 GB unified-memory machine, there's no separate VRAM budget - model, context, and everything else the OS needs compete for the same pool. The [tag list](https://ollama.com/library/qwen2.5-coder/tags) spans from `0.5b` to `32b`, and picking the wrong one is the difference between "runs" and "runs usably."
+On a 16 GB unified-memory machine, there's no separate VRAM budget - model, context, and everything else the OS needs compete for the same pool. The [tag list](https://ollama.com/library/qwen2.5-coder/tags) spans model sizes from `0.5b` to `32b` (b = billion parameters), and picking the wrong one is the difference between "runs" and "runs usably."
 
 ## The experience
 
