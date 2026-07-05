@@ -1,5 +1,10 @@
 export const articles = [
 	{
+		slug: 'qwen2_coder_local_setup',
+		title: 'A local coding agent with qwen2.5-coder',
+		date: 'July 5, 2026'
+	},
+	{
 		slug: 'local_shopping_agent',
 		title: 'A meal planner with PydanticAI and Ollama',
 		date: 'June 14, 2026'
