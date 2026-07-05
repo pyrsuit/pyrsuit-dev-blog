@@ -6,27 +6,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="../_app/immutable/assets/0.De3EECBv.css" rel="stylesheet">
-		<link rel="modulepreload" href="../_app/immutable/entry/start.BwIW_ejz.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/QnOhihIS.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.iWkoIKjq.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DXbWeYw9.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/XgKt1ASm.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/B6aYimKy.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/B3ApAsT9.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/B2Dah1Oa.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/9d0FCqFB.js">
-		<link rel="modulepreload" href="../_app/immutable/entry/app.D5Hb1aq-.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/lfgWOJ7-.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.Bo__dxKh.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/CB8X9wEm.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Bvus1G3m.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/D_isbnG0.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/0.CP4GcHvi.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.BaLxYoNt.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/ZnaxL5IZ.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/B1aDyhai.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/D83vIoDp.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/6vcwwfk2.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/Bgst1ZgD.js">
-		<link rel="modulepreload" href="../_app/immutable/nodes/5.eI1RKYOW.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/CNdPyHqh.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CWji4c4N.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.T3Pwu5gs.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/V-2b7aFR.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/DyASLbnm.js">
 		<link rel="modulepreload" href="../_app/immutable/chunks/BWCVGdwq.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/> <link rel="alternate" type="application/feed+json" title="pyrsuit dev blog" href="../feed.json"/><!--]-->
 	</head>
@@ -45,19 +45,36 @@
     B --> C[Pydantic AI Agent]
     C --> D[WeekPlan]
     D --> E[CLI output]
-    D --> F[.ics export]</div><p>You answer a few prompts - office days, long office days, how many strength/climbing/running/yoga sessions you want, rest days, cycle phase, and any notes - and the agent returns a day-by-day plan with intensity levels and a load summary, optionally exported to your calendar.</p>
+    D --> F[.ics export]</div><p>You answer a few prompts - office days, long office days, how many strength/climbing/running/yoga sessions you want, rest days, cycle phase, and add any notes. Then the agent returns a day-by-day plan with intensity levels and a load summary, optionally exported to your calendar. Built for ladies who take their climbing sends as seriously as their sprint commitments.</p>
 <h2>The components</h2>
-<p><strong><code>WeekInput</code></strong> bundles the week&#39;s constraints: <code>office_days</code>, <code>long_days</code> (workdays that run until 7pm), a <code>WorkoutSplit</code> across strength, climbing, running, yoga and &quot;random&quot;, the current <code>CyclePhase</code>, and free-text notes.</p>
-<p><strong>The system prompt</strong> (<code>prompts.py</code>) is where the actual planning logic lives, not in code. It encodes training load guidance per cycle phase - easing off in the menstrual phase, going hard at ovulation, tapering through the luteal phase - commute and time constraints on office days, and placement rules: never two high-intensity days back to back, keep strength and climbing at least a day apart, put climbing before home-office days to protect recovery.</p>
-<p><strong><code>WeekPlan</code></strong>, the structured output, is enforced with Pydantic AI&#39;s <a href="https://ai.pydantic.dev/output/"><code>NativeOutput</code></a> - seven <code>ScheduledActivity</code> entries (activity, intensity, optional start time, notes) plus a summary and an overall load assessment.</p>
-<p><strong><code>gemma4:e2b</code></strong> runs locally through <code>Ollama</code>, the same setup as the <a href="https://pyrsuit.dev/lab/local_shopping_agent">meal planner</a> agent - <code>OllamaProvider</code> pointed at the OpenAI-compatible <code>/v1</code> endpoint.</p>
-<p><strong><code>calendar_sync.py</code></strong> exports the plan to <code>.ics</code> via the <code>icalendar</code> package, so the week goes straight from terminal to calendar app.</p>
-<p>Repo and setup are in the <a href="https://github.com/pyrsuit/week-planner-agent">README</a>.</p>
+<p><strong><code>WeekInput</code></strong> bundles the week&#39;s constraints: </p>
+<ul>
+<li><code>office_days</code>, </li>
+<li><code>long_days</code> (workdays that run until 7pm), </li>
+<li>a <code>WorkoutSplit</code> across strength, climbing, running, yoga and &quot;random&quot;, </li>
+<li>the current <code>CyclePhase</code>,</li>
+<li>and free-text notes.</li>
+</ul>
+<p><strong>The system prompt</strong> (<code>prompts.py</code>) is where the actual planning logic lives:</p>
+<ul>
+<li>describes training load guidance per cycle phase,</li>
+<li>defines commute and time constraints on office days,</li>
+<li>sets placement rules, e.g. never two high-intensity days back to back, or recovery instructions.</li>
+</ul>
+<p><strong><code>WeekPlan</code></strong> is the structured output, and is enforced with Pydantic AI&#39;s native <a href="https://ai.pydantic.dev/output/"><code>Output</code></a> model - it contains <code>ScheduledActivity</code> entries (activity, intensity, optional start time, notes) plus a summary and an overall load assessment.</p>
+<p><strong><code>gemma4:e2b</code></strong> runs locally through <code>Ollama</code>, the same setup as the <a href="https://pyrsuit.dev/lab/local_shopping_agent">meal planner</a> agent: <code>OllamaProvider</code> pointed at the OpenAI-compatible <code>/v1</code> endpoint.</p>
+<p><strong><code>calendar_sync.py</code></strong> exports the plan to <code>.ics</code> via the <a href="https://icalendar.readthedocs.io/en/stable/">icalendar</a> package, so the week goes straight from terminal to calendar app.</p>
+<h2>The experience</h2>
+<p>Compared to the <em>meal planner</em>, the output here is <strong>genuinely good</strong>, I couldn&#39;t have planned better myself. It also never hit the malformed-output retries the <em>meal planner</em> occasionally ran into, the <code>Output</code> came back <strong>valid</strong> every time. That&#39;s likely just because these instructions are much more precise than the <em>meal planner</em>&#39;s.</p>
+<h2>What I learned</h2>
+<p>It is interesting that classic software design pushes toward <strong>abstraction</strong>: generalize early, keep things broadly applicable. Agent design pulls the other way: the <strong>more specific</strong> the instructions, the <strong>better</strong> the agent performs.</p>
+<p>It&#39;s also encouraging that a rather highly specialized agent like this runs fine on modest hardware - I use the same 16 GB unified-memory machine from the <a href="https://pyrsuit.dev/lab/qwen2_coder_local_setup">qwen2.5-coder setup</a>. Watching resource usage while it ran: <strong>memory</strong> peaked around <strong>7.5 GB</strong> and all <strong>8 CPU cores</strong> were busy.</p>
+<p>You can find the repo and usage instructions on <a href="https://github.com/pyrsuit/week-planner-agent">GitHub</a>.</p>
 <!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_15fssgq = {
+					__sveltekit_1l3njav = {
 						base: new URL("..", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -65,8 +82,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.BwIW_ejz.js"),
-						import("../_app/immutable/entry/app.D5Hb1aq-.js")
+						import("../_app/immutable/entry/start.iWkoIKjq.js"),
+						import("../_app/immutable/entry/app.Bo__dxKh.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
