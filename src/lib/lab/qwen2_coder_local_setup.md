@@ -62,4 +62,4 @@ On a 16 GB unified-memory machine, there's no separate VRAM budget - model, cont
 
 Instead of invoking `glob` through the API, it just wrote the JSON as text and stopped there.
 
-I'd genuinely like to know if there's a model that fits in 16 GB of unified memory and can still handle small agentic tasks. The [repo](https://github.com/pyrsuit/qwen2-coder-local-setup) is open for issues or PRs with your suggestions.
+I'd genuinely like to know if there's a model that fits in 16 GB of unified memory and can still handle small agentic tasks. The [repo](https://github.com/pyrsuit/qwen2.5-coder-local-setup) is open for issues or PRs with your suggestions.
