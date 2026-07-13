@@ -1,5 +1,5 @@
 <div class="flex items-baseline justify-between mb-2">
-  <h1 class="text-2xl font-light tracking-tight">When in Bologna</h1>
+  <h1 class="text-2xl font-light tracking-tight">When in Bologna, on open source</h1>
   <time class="text-sm text-gray-600 ml-4">May 27, 2026</time>
 </div>
 
