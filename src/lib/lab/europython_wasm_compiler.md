@@ -51,7 +51,7 @@ graph TD
         direction LR
         A[.4th source] --> B[strip comments, tokenize] --> C[find variables, declare locals] --> D[code generation]
     end
-    subgraph BE["bIiackend"]
+    subgraph BE["backend"]
         direction LR
         E[.wat text] --> F[wat2wasm] --> G[.wasm binary] --> H[wasmtime runtime]
     end
