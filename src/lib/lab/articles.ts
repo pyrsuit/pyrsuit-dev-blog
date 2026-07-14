@@ -1,5 +1,10 @@
 export const articles = [
 	{
+		slug: 'europython_wasm_compiler',
+		title: 'Crafting your own compiler: from Python logic to high-speed WebAssembly',
+		date: 'July 14, 2026'
+	},
+	{
 		slug: 'week_planner_agent',
 		title: 'A training cycle planning agent',
 		date: 'July 5, 2026'
