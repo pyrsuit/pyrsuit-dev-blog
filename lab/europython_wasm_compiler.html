@@ -32,28 +32,58 @@
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-1he21kw" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
-  <h1 class="text-2xl font-light tracking-tight">When in Bologna, on open source</h1>
-  <time class="text-sm text-gray-600 ml-4">May 27, 2026</time>
+  <h1 class="text-2xl font-light tracking-tight">Crafting your own compiler: from Python logic to high-speed WebAssembly</h1>
+  <time class="text-sm text-gray-600 ml-4">July 14, 2026</time>
 </div>
 
 <blockquote>
-<p><em>The story of <del>my first open source contribution</del></em></p>
+<p><em>Notes from the EuroPython 2026 workshop on building a Forth-to-WebAssembly compiler in Python.</em></p>
 </blockquote>
-<p>I&#39;m reporting from <strong><a href="https://2026.pycon.it/en">PyCon Italy 2026</a></strong>, Bologna, the city of ragù and mortadella, and, as of today, my very first steps toward an open source contribution.</p>
-<p>I have always thought open source contributors were kind of <strong>bad ass</strong>. They are the people behind the tools I use every day, quietly fixing and improving things. Every time I <code>pip install</code> something and it works, there is a person somewhere who made that happen.</p>
-<p>The conference kicked off with an Open Day dedicated to communities. I spent it at the <strong><a href="https://2026.pycon.it/en/event/django-off-the-med">Django Off The Med</a></strong> workshop, which is a sprint session inspired by the <a href="https://buttondown.com/django-on-the-med">Django On The Med</a> gatherings, brought to the city of Bologna for the conference.</p>
-<p>The format is simple: you clone the repo, set up the test suite, and start looking for something to work on in the <a href="https://code.djangoproject.com/query">bug tracker</a>.</p>
-<h2><del>My first open source contribution</del></h2>
-<p><code>Django</code> and I are not really there yet. I don&#39;t use it that much, so jumping straight into contributing to the framework itself felt like a stretch too far for one morning.</p>
-<p>What I did instead turned out to be more relevant to me anyway. I set up a project where I got to interact a bit more with <strong><a href="https://docs.djangoproject.com/en/6.0/ref/contrib/gis/">GeoDjango</a></strong>, <code>Django</code>&#39;s built-in geospatial extension. (I work with weather data, and spatial queries come with the territory.)</p>
-<p>Turns out <code>GeoDjango</code> offers quite a lot. For example:</p>
-<ul>
-<li><strong>Geometry model fields</strong> - <code>PointField</code>, <code>PolygonField</code>, <code>MultiPolygonField</code> which map directly to OGC geometry types in <code>PostGIS</code>.</li>
-<li><strong>Spatial ORM lookups</strong> - you can query with things like <code>filter(poly__dwithin=(geom, D(km=5)))</code> directly in the <code>ORM</code>, no raw SQL needed.</li>
-<li><strong>Distance calculations built in</strong> - annotate a queryset with <code>Distance(&quot;point&quot;, reference_point)</code> and get back a <code>Distance</code> object you can express in various units: <code>.km</code>, <code>.mi</code>, <code>.m</code>.</li>
-</ul>
-<p>One thing I keep turning over: there is a real difference between writing raw <code>SQL</code> and query builders, where you have full control over what hits the database, and using an <code>ORM</code>. Neither is obviously better, and for spatial data specifically I am curious how the abstractions hold up when queries get complex.</p>
-<p>But when in Bologna, do as the Bolognesi do - and apparently that means leaving with something to explore.</p>
+<h2>What is WebAssembly?</h2>
+<p><strong><a href="https://webassembly.org">WebAssembly (Wasm)</a></strong> is a binary instruction format for a <strong>stack-based virtual machine</strong>. There are no registers, every instruction pops its operands off the stack and pushes the result back on. For example, <code>i32.add</code> pops two values, and pushes their sum. Or similarly, <code>i32.le_s</code> (~ less or equal) pops two, pushes a boolean. Control flow (<code>block</code>, <code>loop</code>, <code>br</code>) works the same way: structured, nested regions instead of jumps to arbitrary addresses.</p>
+<p>It&#39;s designed as a compiler target, not something you write by hand. <strong><a href="https://wasmtime.dev/">Wasmtime</a></strong>, the runtime this workshop uses, runs <code>.wasm</code> binaries standalone from the command line (sandboxed).</p>
+<h2>What is Forth?</h2>
+<p><strong><a href="https://en.wikipedia.org/wiki/Forth_(programming_language)">Forth</a></strong> is written in <strong><a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation (RPN)</a></strong>: operators come after their operands, <code>2 3 +</code> instead of <code>2 + 3</code>. Read left to right, every token is either a value to push or an operator to apply to what&#39;s already on the stack. The same order a stack machine executes in. That&#39;s why compiling RPN to Wasm feels almost natural: reading a <code>forth</code> program and reading its compiled <code>wasm</code> are nearly the same.</p>
+<p>Adding two numbers:</p>
+
+      <div class="code-block">
+        <small class="language-label">forth</small>
+        <pre><code class="hljs language-forth"><span class="hljs-symbol">1 </span><span class="hljs-number">2</span> +</code></pre>
+      </div>
+    
+      <div class="code-block">
+        <small class="language-label">wat</small>
+        <pre><code class="hljs language-wat"><span class="hljs-type">i32</span>.<span class="hljs-keyword">const</span> <span class="hljs-number">1</span>
+<span class="hljs-type">i32</span>.<span class="hljs-keyword">const</span> <span class="hljs-number">2</span>
+<span class="hljs-type">i32</span>.add</code></pre>
+      </div>
+    <p>A comparison used as a loop condition, from one of the workshop&#39;s example programs:</p>
+
+      <div class="code-block">
+        <small class="language-label">forth</small>
+        <pre><code class="hljs language-forth">i n &lt;<span class="hljs-operator">=</span></code></pre>
+      </div>
+    
+      <div class="code-block">
+        <small class="language-label">wat</small>
+        <pre><code class="hljs language-wat">local.<span class="hljs-built_in">get</span> <span class="hljs-variable">$i</span>
+local.<span class="hljs-built_in">get</span> <span class="hljs-variable">$n</span>
+i32.le_s</code></pre>
+      </div>
+    <p>Each RPN token becomes one Wasm instruction, in the same order.</p>
+<h2>The pipeline</h2>
+<p>The compiler converts a <code>.4th</code> source file to a runnable <code>.wasm</code> binary:</p>
+<div class="mermaid">graph TD
+    subgraph FE["frontend"]
+        direction LR
+        A[.4th source] --> B[strip comments, tokenize] --> C[find variables, declare locals] --> D[code generation]
+    end
+    subgraph BE["bIiackend"]
+        direction LR
+        E[.wat text] --> F[wat2wasm] --> G[.wasm binary] --> H[wasmtime runtime]
+    end
+    FE ~~~ BE</div><p>The frontend&#39;s <strong>code generation</strong> output is the backend&#39;s <code>.wat</code> text input. <strong>Tokenizing</strong> and code generation are the mechanical step described above. Wasm needs every local <strong>declared</strong> before the function body can use it - Forth doesn&#39;t, you just write <code>x!</code> and <code>x</code> exists. So before generating any instructions, the compiler walks the whole program once to <strong>collect</strong> every variable name, then turns that list into the <strong>declarations</strong> that Wasm requires.</p>
+<p>The full implementation is on <strong><a href="https://github.com/pyrsuit/europython2026">GitHub</a></strong>, the workshop material is at <strong><a href="https://arielortiz.info/europython2026/">arielortiz.info/europython2026</a></strong>.</p>
 <!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
 			
 			<script>

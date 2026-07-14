@@ -6,6 +6,15 @@
   "description": "Articles from pyrsuit dev blog",
   "items": [
     {
+      "id": "https://pyrsuit.dev/lab/europython_wasm_compiler",
+      "url": "https://pyrsuit.dev/lab/europython_wasm_compiler",
+      "title": "Crafting your own compiler: from Python logic to high-speed WebAssembly",
+      "date_published": "2026-07-14T00:00:00.000Z",
+      "tags": [
+        "lab"
+      ]
+    },
+    {
       "id": "https://pyrsuit.dev/lab/week_planner_agent",
       "url": "https://pyrsuit.dev/lab/week_planner_agent",
       "title": "A training cycle planning agent",
@@ -53,7 +62,7 @@
     {
       "id": "https://pyrsuit.dev/lab/when_in_bologna",
       "url": "https://pyrsuit.dev/lab/when_in_bologna",
-      "title": "When in Bologna",
+      "title": "When in Nologna, on open source",
       "date_published": "2026-05-27T00:00:00.000Z",
       "tags": [
         "lab"
