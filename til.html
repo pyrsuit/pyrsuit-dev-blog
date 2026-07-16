@@ -6,26 +6,26 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
 		<link href="./_app/immutable/assets/0.De3EECBv.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/entry/start.B87oraqU.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/zPpc7Si9.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.DukUJE7M.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/LmI4qhq8.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/XgKt1ASm.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/B6aYimKy.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/B3ApAsT9.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/B2Dah1Oa.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CYgJF_JY.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/GOvMhpid.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/app.DOBNZnGR.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/WEuuEIsV.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.CKmcftq5.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/CB8X9wEm.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bvus1G3m.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/Bzak7iHL.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/D_isbnG0.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/0.BgYumPJf.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.D7sKAnO4.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/ZnaxL5IZ.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/B1aDyhai.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/D83vIoDp.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/6vcwwfk2.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/CI6mXyr8.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/6.DWPaP-5S.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/DkjdarSA.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/6.CgSIUyPy.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/BWCVGdwq.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/> <link rel="alternate" type="application/feed+json" title="pyrsuit dev blog" href="./feed.json"/><!--]-->
 	</head>
 	<body data-sveltekit-preload-data="hover">
@@ -47,7 +47,7 @@
 <p><strong>Why this matters if you build or ship packages</strong> 🛠️</p>
 <p>🔁 By default, compiled extensions need to be rebuilt per <strong>Python</strong> version - unless you opt into the <strong>limited API</strong> / <strong>stable ABI</strong> via <code>Py_LIMITED_API</code>, trading some features for <code>abi3</code> wheels that work across versions (<strong><a href="https://peps.python.org/pep-0384/">PEP 384</a></strong>).</p>
 <p>🏷️ Wheel tags like <code>cp311-cp311</code> vs <code>cp311-abi3</code> literally spell out which ABI contract the binary is promising to honor.</p>
-<p>💥 If you get the ABI wrong and users don&#39;t get a friendly <strong>Python</strong> exception.</p>
+<p>💥 If you get the ABI wrong, users don&#39;t get a friendly <strong>Python</strong> exception.</p>
 <p>📚 For a proper deep dive, check out this <strong><a href="https://labs.quansight.org/blog/python-abi-abi3t">article on the <strong>Python</strong> ABI and abi3t</a></strong> - it covers the free-threaded build and what <code>abi3t</code> means for the stable ABI going forward.</p>
 <p>💡 <strong>Takeaway</strong>: If you distribute C extensions, rebuild per <strong>Python</strong> version or use <code>abi3</code> - otherwise the ABI will break in a segfault, not an exception.</p>
 <!----></div> <!--[--><hr class="border-t border-gray-300 mt-6"/><!--]--></article><article><div class="flex items-baseline justify-between mb-2"><h1 class="text-2xl font-light tracking-tight">"Compile me!" 🫖</h1> <time class="text-sm text-gray-600 ml-4">October 8, 2025</time></div> <div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><p>Deciding whether to <code>re.compile</code> a <strong>regex</strong> is a bit like Alice pondering the bottle labeled <em>“Drink me!”</em> - it&#39;s about picking the best option for the situation.</p>
@@ -166,7 +166,7 @@ mm.add(<span class="hljs-number">7</span>)
 			
 			<script>
 				{
-					__sveltekit_qpkxfi = {
+					__sveltekit_1lt6ygo = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						assets: "/pyrsuit-dev-blog"
 					};
@@ -174,8 +174,8 @@ mm.add(<span class="hljs-number">7</span>)
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("./_app/immutable/entry/start.B87oraqU.js"),
-						import("./_app/immutable/entry/app.DOBNZnGR.js")
+						import("./_app/immutable/entry/start.DukUJE7M.js"),
+						import("./_app/immutable/entry/app.CKmcftq5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 6],
