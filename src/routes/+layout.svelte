@@ -122,6 +122,15 @@
   :global(.mermaid code) {
     all: unset;
   }
+  :global(.mermaid) {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    margin: 1em 0;
+  }
+  :global(.mermaid svg) {
+    max-width: none !important;
+  }
   :global(h1) {
     font-size: 1.5rem;
     font-weight: 600;
