@@ -31,7 +31,7 @@ export const articles = [
 	},
 	{
 		slug: 'when_in_bologna',
-		title: 'When in Nologna, on open source',
+		title: 'When in Bologna, on open source',
 		date: 'May 27, 2026'
 	},
 	{
