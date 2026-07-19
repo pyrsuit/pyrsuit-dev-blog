@@ -1,1 +1,0 @@
-import"../chunks/Bzak7iHL.js";import"../chunks/ZnaxL5IZ.js";import{f as n,a as o,n as e}from"../chunks/B6aYimKy.js";var r=n('<h1>The Py<span style="font-weight: 100;">(thon Pu)</span>rsuit</h1> <p class="font-extralight text-base text-gray-600">All things Python.</p>',1);function i(t){var a=r();e(2),o(t,a)}export{i as component};
