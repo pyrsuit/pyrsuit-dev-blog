@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="../_app/immutable/assets/0.B6K5kB1i.css" rel="stylesheet">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.BLNfNg5f.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B5ds2LSy.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/XgKt1ASm.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B6aYimKy.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B3ApAsT9.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B2Dah1Oa.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CYgJF_JY.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D3WpfIED.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.D5DZ3rTw.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/CB8X9wEm.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Bvus1G3m.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Bzak7iHL.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D_isbnG0.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.CzWztC1H.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/ZnaxL5IZ.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/B1aDyhai.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/D83vIoDp.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/6vcwwfk2.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/Rgj-B4ZD.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.CrrQjUf9.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/BBZnhjKV.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/DJiCDa8c.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/BWCVGdwq.js"><!--[--><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&amp;display=swap" rel="stylesheet"/> <link rel="alternate" type="application/feed+json" title="pyrsuit dev blog" href="../feed.json"/><!--]-->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents"><!--[--><!--[--><!----><nav class="bg-yellow-50 p-4 flex justify-center gap-10 shadow-sm"><!--[--><a href="../" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-j6kbas" style="font-family: 'Montserrat', sans-serif;">About</a><a href="../til" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-j6kbas" style="font-family: 'Montserrat', sans-serif;">TIL</a><a href="../lab" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-j6kbas" style="font-family: 'Montserrat', sans-serif;">Lab</a><a href="../contact" class="text-black tracking-wide text-center cursor-pointer transition-all duration-300 font-extralight hover:font-semibold svelte-j6kbas" style="font-family: 'Montserrat', sans-serif;">Contact</a><!--]--></nav> <main class="min-h-screen flex flex-col items-center justify-center bg-yellow-50 text-black px-4" style="font-family: 'Montserrat', sans-serif;"><!----><!----><section class="w-full max-w-5xl mx-auto px-6 pt-4 pb-16"><div class="flex justify-end mb-6"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div> <article><div class="markdown-content text-base text-gray-800 leading-relaxed"><!----><div class="flex items-baseline justify-between mb-2">
+  <h1 class="text-2xl font-light tracking-tight">A local coding agent with Mellum2</h1>
+  <time class="text-sm text-gray-600 ml-4">August 1, 2026</time>
+</div>
+
+<blockquote>
+<p><em>A follow-up to <a href="https://pyrsuit.dev/lab/qwen2_coder_local_setup">running qwen2.5-coder locally</a>. That one ended with an open question: is there a model that fits in 16 GB of unified memory and can still handle small agentic tasks? Here&#39;s the answer.</em></p>
+</blockquote>
+<h2>Recap</h2>
+<p><code>qwen2.5-coder:7b</code> on a 16 GB unified-memory machine could <strong>print</strong> a tool call, but it couldn&#39;t actually <strong>call</strong> the tool. Asked to list files, it wrote out what a tool call would look like instead of invoking one. The obvious next question was whether that was <a href="https://opencode.ai">OpenCode</a>&#39;s fault or the model on the current machine. So I tried a second agent.</p>
+<h2>Agent or model?</h2>
+<p>I added <strong><a href="https://pi.dev">Pi</a></strong> as a second coding agent pointed at the exact same local Ollama. Same failure mode: asked to create a file, Pi also got the tool call back as plain chat text instead of an executable call.</p>
+<p>Qwen2.5-Coder is supposed to wrap tool calls in <code>&lt;tool_call&gt;&lt;/tool_call&gt;</code> tags so Ollama&#39;s OpenAI-compatible endpoint can parse them into a structured <code>tool_calls</code> response. The <code>7b</code> build I could fit in 16 GB doesn&#39;t reliably do this, so Ollama falls back to returning plain text, and the agent has nothing to execute.</p>
+<p>That&#39;s a claim about <strong>this</strong> setup, not about Qwen2.5-Coder in general; a larger build on roomier hardware may well behave differently.</p>
+<h2>Switching to Mellum2</h2>
+<p>Swapping the local model for JetBrains&#39; <strong><a href="https://ollama.com/JetBrains/mellum2-instruct-q4_k_m">Mellum2 Instruct — Q4_K_M</a></strong> opens the door to more experimentation.</p>
+<p>Unlike the Qwen model, Mellum2 reliably emits structured tool calls, so Ollama parses them into a real tool calls instead of falling back to text. In practice the agent finally <strong>does</strong> things rather than describing them:</p>
+<ul>
+<li><strong>Listing files</strong>: it invokes the tool and shows the directory contents.</li>
+<li><strong>Creating files</strong>: asked to create a file, it runs the tool and the file appears on disk.</li>
+<li><strong>Higher-level instructions</strong>: asked to create <code>Pydantic</code> models, it writes working model classes to a file.</li>
+</ul>
+<h2>But is the code any good?</h2>
+<p>Tool-calling working is one thing; writing correct code is another. To measure that I ran <strong><a href="https://github.com/evalplus/evalplus">EvalPlus</a></strong>, which scores functional correctness on <strong><a href="https://github.com/openai/human-eval">HumanEval+</a></strong>, 164 hand-written problems from OpenAI, each a function signature plus a docstring the model has to fill in. The <code>+</code> adds many extra test cases. <code>pass@1</code> is the fraction solved correctly on the first (and only) attempt.</p>
+<p>Everything runs in containers: the <code>evalplus</code> service shares the Compose network with Ollama. The model-generated code is <strong>executed inside a sandboxed container</strong>, never on the host.</p>
+<p>The result, on a 16 GB machine with no dedicated VRAM:</p>
+
+      <div class="code-block">
+        <small class="language-label"></small>
+        <pre><code class="hljs language-"><span class="hljs-attribute">humaneval</span> (base tests)
+<span class="hljs-attribute">pass</span>@<span class="hljs-number">1</span>: <span class="hljs-number">0</span>.<span class="hljs-number">872</span>
+<span class="hljs-attribute">humaneval</span>+ (base + extra tests)
+<span class="hljs-attribute">pass</span>@<span class="hljs-number">1</span>: <span class="hljs-number">0</span>.<span class="hljs-number">848</span></code></pre>
+      </div>
+    <p><strong>87.2%</strong> on the base tests, and it only drops to <strong>84.8%</strong> under <strong>EvalPlus</strong>&#39;s tougher extra tests, a small gap, which suggests the passing solutions are genuinely correct rather than overfit to the original cases.</p>
+<p>All the commands and step-by-step instructions to reproduce this (Docker Compose, agent configs, and the EvalPlus profile) are in the <a href="https://github.com/pyrsuit/qwen2.5-coder-local-setup">repo&#39;s README</a>. Issues and PRs with other models that fit the budget are welcome.</p>
+<!----></div></article> <div class="flex justify-end mt-8"><a href="../lab" class="text-sm font-light tracking-wide no-underline hover:underline">← Back to Lab</a></div></section><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_h0wn7e = {
+						base: new URL("..", location).pathname.slice(0, -1),
+						assets: "/pyrsuit-dev-blog"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../_app/immutable/entry/start.BLNfNg5f.js"),
+						import("../_app/immutable/entry/app.D5DZ3rTw.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null,
+							remote: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

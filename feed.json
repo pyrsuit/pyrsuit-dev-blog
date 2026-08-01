@@ -6,6 +6,15 @@
   "description": "Articles from pyrsuit dev blog",
   "items": [
     {
+      "id": "https://pyrsuit.dev/lab/mellum2_local_coding_agent",
+      "url": "https://pyrsuit.dev/lab/mellum2_local_coding_agent",
+      "title": "A local coding agent with Mellum2",
+      "date_published": "2026-08-01T00:00:00.000Z",
+      "tags": [
+        "lab"
+      ]
+    },
+    {
       "id": "https://pyrsuit.dev/lab/europython_wasm_compiler",
       "url": "https://pyrsuit.dev/lab/europython_wasm_compiler",
       "title": "Crafting your own compiler: from Python logic to high-speed WebAssembly",
