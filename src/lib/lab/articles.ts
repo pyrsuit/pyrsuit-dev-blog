@@ -1,5 +1,10 @@
 export const articles = [
 	{
+		slug: 'mellum2_local_coding_agent',
+		title: 'A local coding agent with Mellum2',
+		date: 'August 1, 2026'
+	},
+	{
 		slug: 'europython_wasm_compiler',
 		title: 'Crafting your own compiler: from Python logic to high-speed WebAssembly',
 		date: 'July 14, 2026'
