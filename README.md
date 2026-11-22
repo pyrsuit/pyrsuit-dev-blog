@@ -1,38 +1,52 @@
-# sv
+# pyrsuit.dev
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
+Source of [pyrsuit.dev](https://pyrsuit.dev), built with [Zensical](https://zensical.org) and managed with [uv](https://docs.astral.sh/uv/).
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+uv sync
+uv run zensical serve        # http://localhost:8000
 ```
 
 ## Building
 
-To create a production version of your app:
-
 ```bash
-npm run build
+uv run zensical build --clean   # output in site/, incl. feed.json and feed.xml
 ```
 
-You can preview the production build with `npm run preview`.
+Pushing to `main` builds and deploys to GitHub Pages (`.github/workflows/deploy.yml`).
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Content
+
+All posts live in one blog (Zensical blog plugin) at `docs/blog/posts/<slug>.md`, served at `/blog/<slug>/`.
+
+```markdown
+---
+date: 2026-11-22
+slug: my_post
+draft: true          # optional: visible in `zensical serve`, left out of `zensical build`
+tags:
+  - TIL              # type: TIL (short note) or Lab (longer write-up)
+  - Performance      # one or more topic tags
+---
+
+# My post
+
+Intro paragraph shown on the blog index.
+
+<!-- more -->
+
+Rest of the post.
+```
+
+- **Excerpt**: `<!-- more -->` is required in every post; the build fails without it.
+- **Tags**: must come from `tags_allowed` in `zensical.toml` (the build fails on unknown tags, which
+  catches typos). Add new topics there. `/tags/` lists posts per tag, and tags are searchable.
+- **Drafts**: remove `draft: true` (or set it to `false`) to publish.
+
+The RSS plugin writes `feed.xml` and `feed.json`. Old `/til/<slug>/` and `/lab/<slug>/` URLs redirect via
+`redirect_maps` in `zensical.toml`: no need to add entries for new posts.
+
+Other files: `docs/contact.md` (Contact), `docs/tags.md` (tag index),
+`docs/stylesheets/extra.css` (light yellow theme).
