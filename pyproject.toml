@@ -1,0 +1,15 @@
+[project]
+name = "pyrsuit-dev-blog"
+version = "0.1.0"
+description = "pyrsuit.dev - all things Python."
+readme = "README.md"
+requires-python = ">=3.15"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "zensical",
+]
+
+[tool.uv]
+package = false
