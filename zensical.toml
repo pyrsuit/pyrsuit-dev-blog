@@ -31,6 +31,11 @@ text = "Montserrat"
 [[project.theme.palette]]
 scheme = "default"
 
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/pyrsuit"
+name = "GitHub"
+
 [project.markdown_extensions]
 abbr = {}
 admonition = {}

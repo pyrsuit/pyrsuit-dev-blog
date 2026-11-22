@@ -1,5 +1,5 @@
 {#-
-  Copied from zensical_ui partials/header.html; only the site title markup is changed
+  Copied from zensical_ui partials/header.html; changes: site title markup, social links (extra.social) next to search
 -#}
 {% set class = "md-header" %}
 {% if "navigation.tabs.sticky" in features %}
@@ -57,6 +57,11 @@
         {% include "partials/search.html" %}
       {% endif %}
     {% endif %}
+    {% for social in config.extra.social %}
+      <a href="{{ social.link }}" class="md-header__button md-icon header-social" title="{{ social.name }}" aria-label="{{ social.name }}" target="_blank" rel="noopener">
+        {% include ".icons/" ~ social.icon ~ ".svg" %}
+      </a>
+    {% endfor %}
     <div class="md-header__source">
       {% if config.repo_url %}
         {% include "partials/source.html" %}
